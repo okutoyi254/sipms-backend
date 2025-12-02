@@ -1,0 +1,8 @@
+spring:
+  application:
+    name:     name: SIPMS
+    name: SIPMS
+SIPMS
+
+  profiles:
+      active: test
