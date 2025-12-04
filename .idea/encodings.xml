@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/hr/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sipms-analytics/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sipms-app/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sipms-branch/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sipms-crm/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sipms-finance/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sipms-hr/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sipms-inventory/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sipms-logistics/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sipms-notification/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sipms-order/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sipms-procurement/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sipms-sales/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>
 </project>

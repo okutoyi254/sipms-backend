@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
+    <excludeFromCompile>
+      <directory url="file://$PROJECT_DIR$/sipms-branch/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/sipms-procurement/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/hr/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/sipms-inventory/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/sipms-sales/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/sipms-finance/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/sipms-hr/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/sipms-logistics/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/sipms-notification/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/sipms-crm/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/sipms-analytics/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/sipms-order/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/sipms-app/src/main/resources/archetype-resources" includeSubdirectories="true" />
+    </excludeFromCompile>
     <annotationProcessing>
       <profile name="Annotation profile for SIPMS" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -9,13 +24,36 @@
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
         </processorPath>
-        <module name="SIPMS" />
+        <module name="sipms-branch" />
+        <module name="sipms-analytics" />
+        <module name="sipms-order" />
+        <module name="sipms-logistics" />
+        <module name="sipms-app" />
+        <module name="sipms-sales" />
+        <module name="sipms-crm" />
+        <module name="sipms-inventory" />
+        <module name="sipms-finance" />
+        <module name="sipms-hr" />
+        <module name="sipms-notification" />
+        <module name="sipms-procurement" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="SIPMS" options="-parameters" />
+      <module name="SIPMS" options="" />
+      <module name="sipms-analytics" options="-parameters" />
+      <module name="sipms-app" options="-parameters" />
+      <module name="sipms-branch" options="-parameters" />
+      <module name="sipms-crm" options="-parameters" />
+      <module name="sipms-finance" options="-parameters" />
+      <module name="sipms-hr" options="-parameters" />
+      <module name="sipms-inventory" options="-parameters" />
+      <module name="sipms-logistics" options="-parameters" />
+      <module name="sipms-notification" options="-parameters" />
+      <module name="sipms-order" options="-parameters" />
+      <module name="sipms-procurement" options="-parameters" />
+      <module name="sipms-sales" options="-parameters" />
     </option>
   </component>
 </project>

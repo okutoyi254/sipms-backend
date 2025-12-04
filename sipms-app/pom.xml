@@ -1,0 +1,55 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.sipms</groupId>
+        <artifactId>SIPMS</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>sipms-app</artifactId>
+    <name>SIPMS Main Application</name>
+    <packaging>jar</packaging> <!-- Explicitly defining jar packaging -->
+
+    <properties>
+        <!-- **Crucial override:** Tells the Spring Boot plugin to RUN repackaging here. -->
+        <spring-boot.repackage.skip>false</spring-boot.repackage.skip>
+    </properties>
+
+    <dependencies>
+        <!-- Import dependencies from your utility modules -->
+        <dependency>
+            <groupId>com.sipms</groupId>
+            <artifactId>sipms-branch</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sipms</groupId>
+            <artifactId>sipms-inventory</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- Add dependencies for all other necessary utility modules -->
+
+        <!-- Standard Spring Boot dependencies (inherited from parent, but good to list if needed) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- ... other runtime dependencies ... -->
+    </dependencies>
+
+    <!-- The build section is usually omitted, as plugin execution is inherited.
+         If required, you can explicitly define the main class here: -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- Ensure the main class is explicitly set if automatic detection fails -->
+                    <mainClass>com.sipms.SipmsApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
