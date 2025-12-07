@@ -6,15 +6,19 @@
         <artifactId>SIPMS</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>sipms-branch</artifactId>
-    <name>Archetype - sipms-branch</name>
+    <artifactId>sipms-management</artifactId>
+    <name>Archetype - sipms-management</name>
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
             <groupId>com.sipms</groupId>
+            <artifactId>sipms-procurement</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sipms</groupId>
             <artifactId>sipms-inventory</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

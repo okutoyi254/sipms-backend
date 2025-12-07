@@ -15,8 +15,10 @@
       <directory url="file://$PROJECT_DIR$/sipms-analytics/src/main/resources/archetype-resources" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/sipms-order/src/main/resources/archetype-resources" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/sipms-app/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/sipms-management/src/main/resources/archetype-resources" includeSubdirectories="true" />
     </excludeFromCompile>
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Annotation profile for SIPMS" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -26,16 +28,17 @@
         </processorPath>
         <module name="sipms-branch" />
         <module name="sipms-analytics" />
-        <module name="sipms-order" />
-        <module name="sipms-logistics" />
         <module name="sipms-app" />
-        <module name="sipms-sales" />
         <module name="sipms-crm" />
-        <module name="sipms-inventory" />
         <module name="sipms-finance" />
-        <module name="sipms-hr" />
         <module name="sipms-notification" />
         <module name="sipms-procurement" />
+        <module name="sipms-order" />
+        <module name="sipms-logistics" />
+        <module name="sipms-sales" />
+        <module name="sipms-inventory" />
+        <module name="sipms-hr" />
+        <module name="sipms-management" />
       </profile>
     </annotationProcessing>
   </component>
@@ -50,6 +53,7 @@
       <module name="sipms-hr" options="-parameters" />
       <module name="sipms-inventory" options="-parameters" />
       <module name="sipms-logistics" options="-parameters" />
+      <module name="sipms-management" options="-parameters" />
       <module name="sipms-notification" options="-parameters" />
       <module name="sipms-order" options="-parameters" />
       <module name="sipms-procurement" options="-parameters" />

@@ -29,6 +29,7 @@
         <module>sipms-analytics</module>
         <module>sipms-order</module>
         <module>sipms-app</module>
+        <module>sipms-management</module>
         <!-- NOTE: You need a main application module to run the app! -->
         <!-- Example: <module>sipms-application</module> -->
     </modules>
