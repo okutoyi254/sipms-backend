@@ -1,8 +1,6 @@
 package model;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @AllArgsConstructor
@@ -11,6 +9,8 @@ import lombok.*;
 @Builder
 @Setter
 @EqualsAndHashCode
+@Entity
+@Table(name = "delivery_logs")
 public class DeliveryLogs {
 
     @Id

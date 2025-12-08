@@ -1,6 +1,8 @@
 package serviceImplementation;
 
+import dto.OrderedProduct;
 import model.*;
+import repository.DeliveryLogsRepository;
 import repository.ProductRepository;
 import repository.SupplierRepository;
 
@@ -9,11 +11,11 @@ import java.util.List;
 public class GeneralManagerService {
 
     private  final SupplierRepository supplierRepository;
-    private final ProductRepository productRepository;
+    private final DeliveryLogsRepository logsRepository;
 
-    public GeneralManagerService(SupplierRepository supplierRepository, ProductRepository productRepository) {
+    public GeneralManagerService(SupplierRepository supplierRepository, DeliveryLogsRepository logsRepository) {
         this.supplierRepository = supplierRepository;
-        this.productRepository = productRepository;
+        this.logsRepository = logsRepository;
     }
 
     public DeliveryLogs orderPlacement(Integer supplierId, List<OrderedProduct>products) {
@@ -26,14 +28,14 @@ public class GeneralManagerService {
             totalPrice +=product.unitPrice()* product.quantity();
 
         }
-        DeliveryLogs logs= DeliveryLogs.builder()
+
+        return logsRepository.save(DeliveryLogs.builder()
                 .supplierName(supplier.getSupplierName())
                 .deliveryStatus(DeliveryStatus.PENDING)
                 .supplierEmail(supplier.getSupplierName())
                 .totalItems(products.size())
-                .totalPrice(totalPrice).build();
-
-        return logs;
+                .totalPrice(totalPrice).build());
     }
 }
+
 
