@@ -1,21 +1,29 @@
 package serviceImplementation;
 
 import dto.OrderedProduct;
+import dto.ShipProduct;
+import lombok.extern.slf4j.Slf4j;
 import model.*;
-import repository.DeliveryLogsRepository;
-import repository.ProductRepository;
-import repository.SupplierRepository;
+import org.springframework.stereotype.Service;
+import repository.*;
 
 import java.util.List;
 
+
+@Service
+@Slf4j
 public class GeneralManagerService {
 
     private  final SupplierRepository supplierRepository;
     private final DeliveryLogsRepository logsRepository;
+    private final BranchRepository branchRepository;
+    private final ShippedProductRepo shippedProductRepo;
 
-    public GeneralManagerService(SupplierRepository supplierRepository, DeliveryLogsRepository logsRepository) {
+    public GeneralManagerService(SupplierRepository supplierRepository, DeliveryLogsRepository logsRepository, BranchRepository branchRepository, ShippedProductRepo shippedProductRepo) {
         this.supplierRepository = supplierRepository;
         this.logsRepository = logsRepository;
+        this.branchRepository = branchRepository;
+        this.shippedProductRepo = shippedProductRepo;
     }
 
     public DeliveryLogs orderPlacement(Integer supplierId, List<OrderedProduct>products) {
@@ -35,6 +43,46 @@ public class GeneralManagerService {
                 .supplierEmail(supplier.getSupplierName())
                 .totalItems(products.size())
                 .totalPrice(totalPrice).build());
+    }
+
+    public ShippedProductRecord shipProductFxn(ShipProduct product) {
+
+        Branch source = branchRepository.findById(product.source()).orElseThrow();
+        Branch destination = branchRepository.findById(product.destination()).orElseThrow();
+
+        for(Product prod :source.getProductList()){
+            if(prod.getProductId()== product.productId()){
+
+                log.info("Initial product quantity for source{}", prod.getProductQuantity());
+                prod.setProductQuantity(prod.getProductQuantity()- product.quantity());
+                log.info("Final product quantity for source{}", prod.getProductQuantity());
+
+            }
+        }
+
+        for(Product prod: destination.getProductList()){
+            if(prod.getProductId()== product.productId()){
+                log.info("Initial product quantity for destination{}", prod.getProductQuantity());
+                prod.setProductQuantity(prod.getProductQuantity()+ product.quantity());
+                log.info("Final product quantity for destination{}", prod.getProductQuantity());
+
+            }
+        }
+
+        branchRepository.save(source);
+        branchRepository.save(destination);
+
+        ShippedProductRecord record=ShippedProductRecord.builder()
+                        .source(source.getBranchId())
+                         .destination(destination.getBranchId())
+                        .productId(product.productId())
+                        .quantity(product.quantity()).build();
+
+        return shippedProductRepo.save(record);
+
+
+
+
     }
 }
 
