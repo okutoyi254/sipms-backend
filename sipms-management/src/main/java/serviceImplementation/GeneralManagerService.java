@@ -60,6 +60,26 @@ public class GeneralManagerService {
             }
         }
 
+
+
+        branchRepository.save(source);
+
+
+        ShippedProductRecord record=ShippedProductRecord.builder()
+                        .source(source.getBranchId())
+                         .destination(destination.getBranchId())
+                        .productId(product.productId())
+                        .quantity(product.quantity())
+                .shippingstatus(SHIPPINGSTATUS.PENDING_DELIVERY).build();
+
+        return shippedProductRepo.save(record);
+
+    }
+
+    public ShippedProductRecord shippedProductsReceivedAndVerified( ShipProduct product){
+
+
+        Branch destination = branchRepository.findById(product.destination()).orElseThrow();
         for(Product prod: destination.getProductList()){
             if(prod.getProductId()== product.productId()){
                 log.info("Initial product quantity for destination{}", prod.getProductQuantity());
@@ -69,20 +89,13 @@ public class GeneralManagerService {
             }
         }
 
-        branchRepository.save(source);
         branchRepository.save(destination);
 
-        ShippedProductRecord record=ShippedProductRecord.builder()
-                        .source(source.getBranchId())
-                         .destination(destination.getBranchId())
-                        .productId(product.productId())
-                        .quantity(product.quantity()).build();
+        ShippedProductRecord shippedProduct=shippedProductRepo.findById(product.productId())
+                .orElseThrow(()->new RuntimeException("No shipped product with the given id"));
+        shippedProduct.setShippingstatus(SHIPPINGSTATUS.VERIFIED);
 
-        return shippedProductRepo.save(record);
-
-
-
-
+        return shippedProductRepo.save(shippedProduct);
     }
 }
 
