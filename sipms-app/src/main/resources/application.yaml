@@ -3,4 +3,4 @@ spring:
     name: SIPMS
 
   profiles:
-    active: test
+    active: dev

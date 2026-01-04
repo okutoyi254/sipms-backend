@@ -31,9 +31,12 @@
         <!-- Add dependencies for all other necessary utility modules -->
 
         <!-- Standard Spring Boot dependencies (inherited from parent, but good to list if needed) -->
+
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <!-- ... other runtime dependencies ... -->
     </dependencies>
