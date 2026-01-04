@@ -11,6 +11,7 @@ import java.util.List;
 @EqualsAndHashCode
 public class Branch {
 
+
     private String branchId;
     private String branchName;
     private String branchLocation;

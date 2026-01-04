@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/a9aada0f-c336-4da0-82f3-a92fd920447b/console.sql" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
+    <file url="file://$PROJECT_DIR$/sipms-inventory/src/main/resources/db/migration/V3__create_products_table.sql" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
+  </component>
+</project>
