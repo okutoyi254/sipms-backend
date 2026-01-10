@@ -47,7 +47,7 @@ public class GeneralManagerServiceTest {
     private Branch sourceBranch;
     private Branch destBranch;
     private ShipProduct shipDetails;
-    private ShippedProductRecord shippedProductRecord;
+    private StockMovement shippedProductRecord;
     private Supplier supplier;
 
     @BeforeEach
@@ -107,10 +107,10 @@ public class GeneralManagerServiceTest {
                 .thenAnswer(invocation -> invocation.getArgument(0));
         when(branchRepository.findById(SOURCE_ID)).thenReturn(Optional.of(sourceBranch));
         when(branchRepository.findById(DEST_ID)).thenReturn(Optional.of(destBranch));
-        when(shippedProductRepo.save(any(ShippedProductRecord.class)))
+        when(shippedProductRepo.save(any(StockMovement.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
-        ShippedProductRecord productRecord = generalManagerService.shipProductFxn(shipDetails);
+        StockMovement productRecord = generalManagerService.shipProductFxn(shipDetails);
 
         assertEquals(SOURCE_ID, productRecord.getSource());
         assertEquals(DEST_ID, productRecord.getDestination());
@@ -121,7 +121,7 @@ public class GeneralManagerServiceTest {
 
         verify(branchRepository, times(1)).findById(SOURCE_ID);
         verify(branchRepository, times(1)).findById(DEST_ID);
-        verify(shippedProductRepo, times(1)).save(any(ShippedProductRecord.class));
+        verify(shippedProductRepo, times(1)).save(any(StockMovement.class));
         verify(branchRepository, times(1)).save(any(Branch.class));
     }
 

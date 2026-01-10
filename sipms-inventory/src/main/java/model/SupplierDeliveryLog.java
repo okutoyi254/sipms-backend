@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class DeliveryLog {
+public class SupplierDeliveryLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

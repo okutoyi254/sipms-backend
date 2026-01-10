@@ -37,7 +37,7 @@ public class GeneralManagerService {
 
         }
 
-        return logsRepository.save(DeliveryLogs.builder()
+        return logsRepository.save(SupplierDeliveryLogs.builder()
                 .supplierName(supplier.getSupplierName())
                 .deliveryStatus(DeliveryStatus.PENDING)
                 .supplierEmail(supplier.getSupplierName())
@@ -45,7 +45,7 @@ public class GeneralManagerService {
                 .totalPrice(totalPrice).build());
     }
 
-    public ShippedProductRecord shipProductFxn(ShipProduct product) {
+    public StockMovement shipProductFxn(ShipProduct product) {
 
         Branch source = branchRepository.findById(product.source()).orElseThrow();
         Branch destination = branchRepository.findById(product.destination()).orElseThrow();
