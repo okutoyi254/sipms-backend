@@ -1,10 +1,10 @@
 package repository;
 
-import model.DeliveryLog;
+import model.SupplierDeliveryLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DeliveryLogsRepository extends JpaRepository<DeliveryLog,Long> {
+public interface DeliveryLogsRepository extends JpaRepository<SupplierDeliveryLog,Long> {
 
 }

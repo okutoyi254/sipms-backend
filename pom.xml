@@ -30,6 +30,7 @@
         <module>sipms-order</module>
         <module>sipms-app</module>
         <module>sipms-management</module>
+        <module>sipms-common</module>
         <!-- NOTE: You need a main application module to run the app! -->
         <!-- Example: <module>sipms-application</module> -->
     </modules>

@@ -1,8 +1,6 @@
 package model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +11,10 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Builder
-public class ShippedProductRecord {
+public class StockMovement {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private long shippingId;
     private String source;

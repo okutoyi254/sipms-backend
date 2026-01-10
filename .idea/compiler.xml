@@ -16,6 +16,7 @@
       <directory url="file://$PROJECT_DIR$/sipms-order/src/main/resources/archetype-resources" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/sipms-app/src/main/resources/archetype-resources" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/sipms-management/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/sipms-common/src/main/resources/archetype-resources" includeSubdirectories="true" />
     </excludeFromCompile>
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
@@ -40,6 +41,16 @@
         <module name="sipms-hr" />
         <module name="sipms-management" />
       </profile>
+      <profile name="Annotation profile for sipms-common" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
+        </processorPath>
+        <module name="sipms-common" />
+      </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
@@ -48,6 +59,7 @@
       <module name="sipms-analytics" options="-parameters" />
       <module name="sipms-app" options="-parameters" />
       <module name="sipms-branch" options="-parameters" />
+      <module name="sipms-common" options="-parameters" />
       <module name="sipms-crm" options="-parameters" />
       <module name="sipms-finance" options="-parameters" />
       <module name="sipms-hr" options="-parameters" />
