@@ -1,0 +1,17 @@
+/home/jemoh/IdeaProjects/sipms-backend/sipms-inventory/src/main/java/dto/OrderedProduct.java
+/home/jemoh/IdeaProjects/sipms-backend/sipms-inventory/src/main/java/dto/ShipProduct.java
+/home/jemoh/IdeaProjects/sipms-backend/sipms-inventory/src/main/java/enums/MovementType.java
+/home/jemoh/IdeaProjects/sipms-backend/sipms-inventory/src/main/java/enums/ProductStatus.java
+/home/jemoh/IdeaProjects/sipms-backend/sipms-inventory/src/main/java/model/BatchStatus.java
+/home/jemoh/IdeaProjects/sipms-backend/sipms-inventory/src/main/java/model/BranchProduct.java
+/home/jemoh/IdeaProjects/sipms-backend/sipms-inventory/src/main/java/model/Category.java
+/home/jemoh/IdeaProjects/sipms-backend/sipms-inventory/src/main/java/model/DeliveryStatus.java
+/home/jemoh/IdeaProjects/sipms-backend/sipms-inventory/src/main/java/model/Product.java
+/home/jemoh/IdeaProjects/sipms-backend/sipms-inventory/src/main/java/model/ProductBatch.java
+/home/jemoh/IdeaProjects/sipms-backend/sipms-inventory/src/main/java/model/ProductInventory.java
+/home/jemoh/IdeaProjects/sipms-backend/sipms-inventory/src/main/java/model/SHIPPINGSTATUS.java
+/home/jemoh/IdeaProjects/sipms-backend/sipms-inventory/src/main/java/model/StockMovement.java
+/home/jemoh/IdeaProjects/sipms-backend/sipms-inventory/src/main/java/model/SupplierDeliveryLog.java
+/home/jemoh/IdeaProjects/sipms-backend/sipms-inventory/src/main/java/repository/DeliveryLogsRepository.java
+/home/jemoh/IdeaProjects/sipms-backend/sipms-inventory/src/main/java/repository/ProductRepository.java
+/home/jemoh/IdeaProjects/sipms-backend/sipms-inventory/src/main/java/service/InventoryService.java

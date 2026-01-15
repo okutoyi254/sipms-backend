@@ -1,0 +1,11 @@
+package model;
+
+public enum BranchType {
+    HEAD_OFFICE,
+    REGIONAL_OFFICE,
+    BRANCH_OFFICE,
+    WAREHOUSE,
+    RETAIL_STORE,
+    DISTRIBUTION_CENTER,
+    SERVICE_CENTER
+}
