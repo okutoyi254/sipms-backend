@@ -2,10 +2,12 @@
 <project version="4">
   <component name="DataSourcePerFileMappings">
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/a9aada0f-c336-4da0-82f3-a92fd920447b/console.sql" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
+    <file url="file://$PROJECT_DIR$/sipms-inventory/src/main/resources/db/migration/V10_Create_stock_movement_table.sql" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
     <file url="file://$PROJECT_DIR$/sipms-inventory/src/main/resources/db/migration/V3__create_products_table.sql" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
     <file url="file://$PROJECT_DIR$/sipms-inventory/src/main/resources/db/migration/V4__Refactor_product_table.sql" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
     <file url="file://$PROJECT_DIR$/sipms-inventory/src/main/resources/db/migration/V6__Refactor_product_category_table.sql" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
     <file url="file://$PROJECT_DIR$/sipms-inventory/src/main/resources/db/migration/V7__Create_branch_table.sql" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
     <file url="file://$PROJECT_DIR$/sipms-inventory/src/main/resources/db/migration/V8__Create_branchproducts_table.sql" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
+    <file url="file://$PROJECT_DIR$/sipms-inventory/src/main/resources/db/migration/V9__Create_product_inventory.sql" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
   </component>
 </project>

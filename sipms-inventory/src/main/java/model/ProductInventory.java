@@ -5,14 +5,14 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "inventory",
-uniqueConstraints = @UniqueConstraint(columnNames = {"product_id","branch_id"})
+@Table(name = "product_inventory",
+uniqueConstraints = @UniqueConstraint(columnNames = {"product_id","branch_id"}))
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true,exclude = {"product","branch"})
 @ToString(exclude = {"product","branch"})
-public class Inventory extends BaseEntity {
+public class ProductInventory extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)

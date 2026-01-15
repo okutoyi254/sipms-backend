@@ -10,6 +10,7 @@ import lombok.*;
 @Data
 @Entity
 
+@Table(name = "stock_movements")
 @EqualsAndHashCode(callSuper = true,exclude = {"product","branch","fromBranch","toBranch"})
 @ToString(exclude = {"product","branch","fromBranch","toBranch"})
 
