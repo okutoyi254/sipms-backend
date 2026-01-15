@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="JpaBuddyIdeaProjectConfig" ddlLastScriptDirectoryPath="$PROJECT_DIR$/sipms-inventory" />
+  <component name="JpaBuddyIdeaProjectConfig" ddlLastScriptDirectoryPath="$PROJECT_DIR$/sipms-inventory" reUseTableSchema="true">
+    <option name="reLastEntityCreationPackage" value="sipms-app/src/main/java/com/sipms" />
+    <option name="reverseEngineeringLastDbConnectionId" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
+  </component>
 </project>

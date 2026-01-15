@@ -1,6 +1,7 @@
 package model;
 
 import entity.BaseEntity;
+import enums.ProductStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,7 +37,7 @@ public class Product extends BaseEntity {
     private Category category;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    private List<Inventory> inventoryRecords = new ArrayList<>();
+    private List<ProductInventory> inventoryRecords = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<BranchProduct> branchProducts = new ArrayList<>();

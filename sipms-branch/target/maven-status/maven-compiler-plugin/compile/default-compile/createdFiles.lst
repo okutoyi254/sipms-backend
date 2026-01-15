@@ -1,0 +1,5 @@
+repository/BranchRepository.class
+model/Branch.class
+model/BranchStatus.class
+model/BranchType.class
+service/BranchService.class
