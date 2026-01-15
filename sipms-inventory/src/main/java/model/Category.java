@@ -1,5 +1,6 @@
 package model;
 
+import entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,14 +19,13 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Category {
+@EqualsAndHashCode( callSuper = true)
+public class Category extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
-    @EqualsAndHashCode.Include
-    private Long categoryId;
+    @Column(name = "category_code",nullable = false,unique = true,length = 50)
+    private String categoryCode;
+
+
 
     @Column(name = "category_name", nullable = false, length = 100)
     private String categoryName;
@@ -41,26 +41,29 @@ public class Category {
     @Builder.Default
     private List<Category> subCategories=new ArrayList<>();
 
-    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
-    @Builder.Default
+    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY)
     private List<Product>products=new ArrayList<>();
 
-    @Column(name = "created_at",nullable = false)
-    private LocalDateTime createdAt;
+    @Column(nullable = false)
+    private Boolean isGlobal =true;
 
-    @Column(name = "update_at")
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
+    public void addProduct(Product product){
+        products.add(product);
+        product.setCategory(this);
     }
 
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+    public void removeProduct(Product product){
+        products.remove(product);
+        product.setCategory(null);
+
     }
+
+    public void addSubCategory(Category subCategory){
+        subCategories.add(subCategory);
+        subCategory.setParentCategory(this);
+    }
+
+
 
 
 }

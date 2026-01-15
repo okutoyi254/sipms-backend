@@ -9,4 +9,17 @@
     <artifactId>sipms-inventory</artifactId>
     <name>Archetype - sipms-inventory</name>
     <url>http://maven.apache.org</url>
+    <dependencies>
+        <dependency>
+            <groupId>com.sipms</groupId>
+            <artifactId>sipms-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sipms</groupId>
+            <artifactId>sipms-branch</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

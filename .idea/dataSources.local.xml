@@ -26,8 +26,8 @@
                 <name qname="order" />
                 <name qname="notification" />
                 <name qname="logistics" />
-                <name qname="schema_name" />
                 <name qname="management" />
+                <name qname="sipms-branch" />
               </node>
             </node>
           </node>

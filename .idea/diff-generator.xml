@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DiffGenerationConfig">
+    <option name="sourceModelValue" value="sipms-inventory:sipms-inventory" />
+    <option name="targetDbValue" value="a9aada0f-c336-4da0-82f3-a92fd920447b__sipms_database_inventory" />
+  </component>
+</project>
