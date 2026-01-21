@@ -4,6 +4,8 @@ import entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "product_inventory",
 uniqueConstraints = @UniqueConstraint(columnNames = {"product_id","branch_id"}))
@@ -30,4 +32,10 @@ public class ProductInventory extends BaseEntity {
 
     @Column(nullable = false)
     private Integer quantityAvailable = 0;
+
+    @Column(nullable = false)
+    private BigDecimal averageCost;
+
+    @Column(nullable = false)
+    private Integer minimumStockLevel = 0;
 }

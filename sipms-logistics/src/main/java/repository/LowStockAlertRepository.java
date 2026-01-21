@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LowStockAlertRepository extends JpaRepository<LowStockAlert,Long> {
+    LowStockAlert findByTransferRequestId(Long id);
 }
