@@ -18,7 +18,9 @@ import repository.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -52,9 +54,9 @@ public class BranchTransferService {
         alert.setShortageQuantity(inventory.getMinimumStockLevel() - inventory.getQuantityAvailable());
         alert.setStatus(AlertStatus.NEW);
 
-        if (inventory.getQuantityAvailable() <= 0) {
+        if (inventory.getQuantityAvailable() == 0) {
             alert.setSeverity(AlertSeverity.OUT_OF_STOCK);
-        } else if (inventory.getQuantityAvailable() < inventory.getMinimumStockLevel() * 0.5) {
+        } else if (inventory.getQuantityAvailable() < inventory.getMinimumStockLevel()  && inventory.getQuantityAvailable() > 0) {
             alert.setSeverity(AlertSeverity.CRITICAL);
         } else {
             alert.setSeverity(AlertSeverity.WARNING);
@@ -71,28 +73,36 @@ public class BranchTransferService {
             Long destinationBranchId,
             Integer requiredQuantity
     ) {
-        log.info("Finding source branch for product {} (need {} units)", productId, requiredQuantity);
-
-        List<ProductInventory> availableStock = inventoryRepository.findAllByProductId(productId);
-
-        Optional<Branch> sourceBranch = availableStock.stream()
-                .filter(inv -> !inv.getBranch().getId().equals(destinationBranchId))
-                .filter(inv -> inv.getQuantityAvailable() >= requiredQuantity)
-                .filter(inv -> {
-                    int afterTransfer = inv.getQuantityAvailable() - requiredQuantity;
-                    return afterTransfer >= inv.getMinimumStockLevel();
-                })
-                .map(ProductInventory::getBranch)
-                .findFirst(); //Sort by distance/priority
-
-        if (sourceBranch.isPresent())
-            log.info("Found source branch {}", sourceBranch.get().getBranchName());
-        else {
-            log.warn("No suitable branch found for product {}", productId);
+        if (requiredQuantity == null || requiredQuantity <= 0) {
+            log.warn("Invalid requiredQuantity: {}", requiredQuantity);
+            return Optional.empty();
         }
 
+        log.info("Finding source branch for product {} (need {} units)",
+                productId, requiredQuantity);
+
+        List<ProductInventory> availableStock =
+                inventoryRepository.findAllByProductId(productId);
+
+        Optional<Branch> sourceBranch = availableStock.stream()
+                .filter(inv -> !Objects.equals(inv.getBranch().getId(), destinationBranchId))
+                .filter(inv -> inv.getQuantityAvailable() >= requiredQuantity)
+                .filter(inv ->
+                        inv.getQuantityAvailable() - requiredQuantity >= inv.getMinimumStockLevel()
+                )
+                .max(Comparator.comparingInt(ProductInventory::getQuantityAvailable))
+                .map(ProductInventory::getBranch);
+
+        sourceBranch.ifPresentOrElse(
+                b -> log.info("Found source branch {}", b.getBranchName()),
+                () -> log.warn("No suitable branch found for product {}", productId)
+        );
+
+
         return sourceBranch;
+
     }
+
 
     //    Auto create transfer request
     @Transactional
