@@ -182,12 +182,13 @@ public class BranchTransferServiceTest {
         alert.setId(1L);
         alert.setBranch(mombasaBranch);
         alert.setProduct(laptop);
+        alert.setShortageQuantity(8);
         alert.setCurrentStock(2);
         alert.setMinimumStockLevel(10);
 
-        when(branchRepository.findById(mombasaBranch.getId()))
+        lenient().when(branchRepository.findById(mombasaBranch.getId()))
                 .thenReturn(Optional.of(mombasaBranch));
-        when(productRepository.findById(laptop.getId()))
+        lenient().when(productRepository.findById(laptop.getId()))
                 .thenReturn(Optional.of(laptop));
         when(inventoryRepository.findAllByProductId(laptop.getId()))
                 .thenReturn(Arrays.asList(nairobiInventory,mombasaInventory));
