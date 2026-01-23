@@ -292,5 +292,20 @@ public class BranchTransferServiceTest {
         );
     }
 
+    @Test
+    @DisplayName("Should fail approve transfer request when already approved")
+    void testApproveTransferRequest_Failure_AlreadyApproved() {
+        StockTransferRequest transferRequest = createPendingTransferRequest();
+        transferRequest.setStatus(TransferStatus.APPROVED);
+
+        when(transferRequestRepository.findById(1L))
+                .thenReturn(Optional.of(transferRequest));
+        assertThrows(RuntimeException.class, () ->
+                transferService.approveTransfer(1L, "managerUser")
+        );
+    }
+
+
+
 }
 
