@@ -1,6 +1,8 @@
 import entity.LowStockAlert;
+import entity.StockTransferRequest;
 import enums.AlertSeverity;
 import enums.AlertStatus;
+import enums.TransferStatus;
 import model.Branch;
 import model.Product;
 import model.ProductInventory;
@@ -15,6 +17,7 @@ import repository.*;
 import service.BranchTransferService;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -209,6 +212,84 @@ public class BranchTransferServiceTest {
         verify(lowStockAlertRepository,times(1)).save(argThat(a->
             a.getStatus()==AlertStatus.IN_PROGRESS
         ));
+    }
+
+     @Test
+    @DisplayName("Should fail auto-create transfer request when no source branch found")
+    void testAutoCreateTransferRequestForLowStockAlert_Failure_NoSourceBranch() {
+         LowStockAlert alert = new LowStockAlert();
+         alert.setId(1L);
+         alert.setBranch(mombasaBranch);
+         alert.setProduct(laptop);
+         alert.setShortageQuantity(8);
+         alert.setCurrentStock(2);
+         alert.setMinimumStockLevel(10);
+
+         when(lowStockAlertRepository.findById(1L)).thenReturn(Optional.of(alert));
+         when(inventoryRepository.findAllByProductId(laptop.getId()))
+                 .thenReturn(Arrays.asList(mombasaInventory));
+         when(lowStockAlertRepository.save(any(LowStockAlert.class)))
+                 .thenAnswer(invocation -> invocation.getArgument(0));
+
+         StockTransferRequest transferRequest = transferService.autoCreateTransferFromAlert(alert.getId());
+         assertNull(transferRequest);
+         verify(lowStockAlertRepository, times(1)).save(argThat(a ->
+                 a.getStatus() == AlertStatus.ACKNOWLEDGED
+         ));
+     }
+
+     @Test
+    @DisplayName("Should approve transfer request successfully")
+    void testApproveTransferRequest_Success() {
+         StockTransferRequest transferRequest = createPendingTransferRequest();
+
+         when(transferRequestRepository.findById(1L))
+                 .thenReturn(Optional.of(transferRequest));
+         when(transferRequestRepository.save(any(StockTransferRequest.class)))
+                 .thenAnswer(invocation -> invocation.getArgument(0));
+         when(inventoryRepository.findByProductIdAndBranchId(1L, 1L))
+                 .thenReturn(Optional.of(nairobiInventory));
+
+         transferService.approveTransfer(1L, "managerUser");
+         assertEquals("managerUser", transferRequest.getApprovedBy());
+         assertEquals(TransferStatus.APPROVED, transferRequest.getStatus());
+         assertEquals(8, transferRequest.getTransferItems().get(0).getApprovedQuantity());
+
+         verify(transferRequestRepository, times(1)).save(transferRequest);
+     }
+
+    private StockTransferRequest createPendingTransferRequest() {
+        StockTransferRequest transferRequest = new StockTransferRequest();
+        transferRequest.setId(1L);
+        transferRequest.setSourceBranch(nairobiBranch);
+        transferRequest.setDestinationBranch(mombasaBranch);
+        transferRequest.setApprovalDate(LocalDate.now());
+        transferRequest.setStatus(TransferStatus.PENDING_APPROVAL);
+
+        var item = new entity.StockTransferItem();
+        item.setProduct(laptop);
+        item.setRequestedQuantity(8);
+        item.setApprovedQuantity(8);
+        transferRequest.setTransferItems(List.of(item));
+
+        return transferRequest;
+
+    }
+
+    @Test
+    @DisplayName("Should fail approve transfer request when insufficient stock in source branch")
+    void testApproveTransferRequest_Failure_InsufficientStock() {
+        StockTransferRequest transferRequest = createPendingTransferRequest();
+        nairobiInventory.setQuantityAvailable(5); // Not enough for requested 8
+
+        when(transferRequestRepository.findById(1L))
+                .thenReturn(Optional.of(transferRequest));
+        when(inventoryRepository.findByProductIdAndBranchId(1L, 1L))
+                .thenReturn(Optional.of(nairobiInventory));
+
+        assertThrows(RuntimeException.class, () ->
+                transferService.approveTransfer(1L, "managerUser")
+        );
     }
 
 }
