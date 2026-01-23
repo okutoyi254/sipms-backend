@@ -378,6 +378,7 @@ public class BranchTransferService {
                          "Damaged during transfer",
                          receivedBy
                  );
+                 allReceived=false;
              }
 
              if (receipt.getReceivedQuantity() < item.getShippedQuantity()) {

@@ -408,19 +408,83 @@ public class BranchTransferServiceTest {
 
         return transferRequest;
     }
+
+    @Test
+    @DisplayName("Should receive transfer with partial quantities and damaged items")
+    void testReceiveTransfer_PartialAndDamaged() {
+        // Given
+        StockTransferRequest transfer = createInTransitTransferRequest();
+
+        ReceiptItem receipt = new ReceiptItem();
+        receipt.setItemId(1L);
+        receipt.setReceivedQuantity(6);
+        receipt.setDamagedQuantity(2);
+        receipt.setNotes("2 items damaged");
+
+        when(transferRequestRepository.findById(1L)).thenReturn(Optional.of(transfer));
+        when(inventoryRepository.findByProductIdAndBranchId(1L, 2L))
+                .thenReturn(Optional.of(mombasaInventory));
+        when(inventoryRepository.save(any(ProductInventory.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+        when(stockMovementRepository.save(any(StockMovement.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+        when(transferRequestRepository.save(any(StockTransferRequest.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        // When
+        transferService.receiveTransfer(1L, "receiverUser", Arrays.asList(receipt));
+
+        assertEquals(TransferStatus.PARTIALLY_RECEIVED, transfer.getStatus());
+        assertEquals(6, mombasaInventory.getQuantityOnHand()); // 2 + 6
+        assertEquals(6, mombasaInventory.getQuantityAvailable());
+        assertEquals(6, transfer.getTransferItems().get(0).getReceivedQuantity());
+        assertEquals(2, transfer.getTransferItems().get(0).getDamagedQuantity());
+
+        verify(stockMovementRepository, times(1)).save(argThat(sm ->
+                sm.getMovementType() == MovementType.TRANSFER_IN && sm.getQuantity() == 4
+        ));
+
+
+        verify(stockMovementRepository, times(1)).save(argThat(sm ->
+                sm.getMovementType() == MovementType.DAMAGE && sm.getQuantity() == 2
+        ));
+
+    }
+
+    @Test
+    @DisplayName("Should mark as partially received when not all items are received")
+    void testReceiveTransfer_PartialNotAllReceived() {
+
+        StockTransferRequest transfer = createInTransitTransferRequest();
+
+        ReceiptItem receipt = new ReceiptItem();
+        receipt.setItemId(1L);
+        receipt.setReceivedQuantity(5);
+        receipt.setDamagedQuantity(0);
+        receipt.setNotes("5 items received");
+
+        when(transferRequestRepository.findById(1L)).thenReturn(Optional.of(transfer));
+        when(inventoryRepository.findByProductIdAndBranchId(1L, 2L))
+                .thenReturn(Optional.of(mombasaInventory));
+        when(inventoryRepository.save(any(ProductInventory.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+        when(stockMovementRepository.save(any(StockMovement.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+        when(transferRequestRepository.save(any(StockTransferRequest.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        // When
+        transferService.receiveTransfer(1L, "receiverUser", Arrays.asList(receipt));
+
+        // Then
+        assertEquals(TransferStatus.PARTIALLY_RECEIVED, transfer.getStatus());
+        assertEquals(7, mombasaInventory.getQuantityOnHand()); // 2 + 5
+        assertEquals(7, mombasaInventory.getQuantityAvailable());
+        assertEquals(5, transfer.getTransferItems().get(0).getReceivedQuantity());
+
+        verify(stockMovementRepository, times(1)).save(argThat(sm ->
+                sm.getMovementType() == MovementType.TRANSFER_IN && sm.getQuantity() == 5
+        ));
+    }
+
 }
-//   @lombok.Data
-//   @lombok.NoArgsConstructor
-//    class ReceiptItem {
-//       private Long productId;
-//       private Integer receivedQuantity;
-//       private Integer damagedQuantity;
-//       private String notes;
-//
-//       public ReceiptItem(Long productId, Integer receivedQuantity, Integer damagedQuantity,String notes) {
-//           this.productId = productId;
-//           this.receivedQuantity = receivedQuantity;
-//           this.damagedQuantity = damagedQuantity;
-//              this.notes = notes;
-//       }
-//   }
