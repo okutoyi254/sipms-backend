@@ -291,7 +291,7 @@ public class BranchTransferService {
                 item.setShippedQuantity(item.getApprovedQuantity());
             }
 
-            transferRequest.setStatus(TransferStatus.IN_TRANSIT);
+            transferRequest.setStatus(TransferStatus.APPROVED);
             transferRequest.setShippedBy(shippedBy);
             transferRequest.setShippingCarrier(carrier);
             transferRequest.setTrackingNumber(trackingNumber);
