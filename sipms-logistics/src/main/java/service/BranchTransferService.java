@@ -1,6 +1,7 @@
 package service;
 
 import entity.LowStockAlert;
+import entity.ReceiptItem;
 import entity.StockTransferItem;
 import entity.StockTransferRequest;
 import enums.*;
@@ -462,11 +463,5 @@ public class BranchTransferService {
         private String reason;
         }
 
-        @lombok.Data
-        class ReceiptItem{
-        private Long itemId;
-        private Integer receivedQuantity;
-        private Integer damagedQuantity;
-        private String notes;
-        }
+
 

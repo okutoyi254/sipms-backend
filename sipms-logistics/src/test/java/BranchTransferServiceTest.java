@@ -1,7 +1,9 @@
 import entity.LowStockAlert;
+import entity.ReceiptItem;
 import entity.StockTransferRequest;
 import enums.AlertSeverity;
 import enums.AlertStatus;
+import enums.MovementType;
 import enums.TransferStatus;
 import model.Branch;
 import model.Product;
@@ -351,5 +353,74 @@ public class BranchTransferServiceTest {
         return transferRequest;
     }
 
+    @Test
+    @DisplayName("Should receive transfer and update destination inventory")
+    void testReceiveTransfer_FullyReceived() {
+        // Given
+        StockTransferRequest transfer = createInTransitTransferRequest();
 
+        ReceiptItem receipt = new ReceiptItem();
+        receipt.setItemId(1L);
+        receipt.setReceivedQuantity(8);
+        receipt.setDamagedQuantity(0);
+        receipt.setNotes("All good");
+
+        when(transferRequestRepository.findById(1L)).thenReturn(Optional.of(transfer));
+        when(inventoryRepository.findByProductIdAndBranchId(1L, 2L))
+                .thenReturn(Optional.of(mombasaInventory));
+        when(inventoryRepository.save(any(ProductInventory.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+        when(stockMovementRepository.save(any(StockMovement.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+        when(transferRequestRepository.save(any(StockTransferRequest.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        // When
+        transferService.receiveTransfer(1L, "warehouse@mombasa.com", Arrays.asList(receipt));
+
+        // Then
+        assertEquals(TransferStatus.COMPLETED, transfer.getStatus());
+        assertEquals(10, mombasaInventory.getQuantityOnHand()); // 2 + 8
+        assertEquals(10, mombasaInventory.getQuantityAvailable());
+        assertEquals(8, transfer.getTransferItems().get(0).getReceivedQuantity());
+
+        verify(stockMovementRepository, times(1)).save(argThat(sm ->
+                sm.getMovementType() == MovementType.TRANSFER_IN && sm.getQuantity() == 8
+        ));
+    }
+
+    private StockTransferRequest createInTransitTransferRequest() {
+        StockTransferRequest transferRequest = new StockTransferRequest();
+        transferRequest.setId(1L);
+        transferRequest.setSourceBranch(nairobiBranch);
+        transferRequest.setDestinationBranch(mombasaBranch);
+        transferRequest.setApprovalDate(LocalDate.now());
+        transferRequest.setStatus(TransferStatus.IN_TRANSIT);
+
+        var item = new entity.StockTransferItem();
+        item.setId(1L);
+        item.setProduct(laptop);
+        item.setUnitCost(BigDecimal.valueOf(10000));
+        item.setRequestedQuantity(8);
+        item.setApprovedQuantity(8);
+        item.setShippedQuantity(8);
+        transferRequest.setTransferItems(List.of(item));
+
+        return transferRequest;
+    }
 }
+//   @lombok.Data
+//   @lombok.NoArgsConstructor
+//    class ReceiptItem {
+//       private Long productId;
+//       private Integer receivedQuantity;
+//       private Integer damagedQuantity;
+//       private String notes;
+//
+//       public ReceiptItem(Long productId, Integer receivedQuantity, Integer damagedQuantity,String notes) {
+//           this.productId = productId;
+//           this.receivedQuantity = receivedQuantity;
+//           this.damagedQuantity = damagedQuantity;
+//              this.notes = notes;
+//       }
+//   }
