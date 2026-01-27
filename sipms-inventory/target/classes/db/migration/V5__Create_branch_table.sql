@@ -1,5 +1,5 @@
 
-CREATE TABLE branches (
+CREATE TABLE "sipms-branch".branches (
                           id BIGSERIAL PRIMARY KEY,
                           branch_id VARCHAR(255) NOT NULL UNIQUE,
                           branch_name VARCHAR(255) NOT NULL,
@@ -13,12 +13,12 @@ CREATE TABLE branches (
                           CONSTRAINT chk_branches_name_not_empty CHECK (branch_name <> '')
 );
 
-CREATE INDEX idx_branches_branch_id ON branches(branch_id);
-CREATE INDEX idx_branches_name ON branches(branch_name);
-CREATE INDEX idx_branches_location ON branches(branch_location);
+CREATE INDEX idx_branches_branch_id ON "sipms-branch".branches(branch_id);
+CREATE INDEX idx_branches_name ON "sipms-branch".branches(branch_name);
+CREATE INDEX idx_branches_location ON "sipms-branch".branches(branch_location);
 
-COMMENT ON TABLE branches IS 'Stores branch/location information for the organization';
-COMMENT ON COLUMN branches.id IS 'Primary key - auto-generated database ID';
-COMMENT ON COLUMN branches.branch_id IS 'Business identifier for the branch (unique)';
-COMMENT ON COLUMN branches.branch_name IS 'Display name of the branch';
-COMMENT ON COLUMN branches.branch_location IS 'Physical location/address of the branch';
+COMMENT ON TABLE "sipms-branch".branches IS 'Stores branch/location information for the organization';
+COMMENT ON COLUMN "sipms-branch".branches.id IS 'Primary key - auto-generated database ID';
+COMMENT ON COLUMN "sipms-branch".branches.branch_id IS 'Business identifier for the branch (unique)';
+COMMENT ON COLUMN "sipms-branch".branches.branch_name IS 'Display name of the branch';
+COMMENT ON COLUMN "sipms-branch".branches.branch_location IS 'Physical location/address of the branch';

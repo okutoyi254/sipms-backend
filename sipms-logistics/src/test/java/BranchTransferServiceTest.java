@@ -1,14 +1,22 @@
-import entity.LowStockAlert;
-import entity.ReceiptItem;
-import entity.StockTransferRequest;
-import enums.AlertSeverity;
-import enums.AlertStatus;
-import enums.MovementType;
-import enums.TransferStatus;
-import model.Branch;
-import model.Product;
-import model.ProductInventory;
-import model.StockMovement;
+import com.sipms.branch.model.Branch;
+import com.sipms.branch.repository.BranchRepository;
+import com.sipms.inventory.enums.MovementType;
+import com.sipms.inventory.model.Product;
+import com.sipms.inventory.model.ProductInventory;
+import com.sipms.inventory.model.StockMovement;
+import com.sipms.inventory.repository.ProductInventoryRepository;
+import com.sipms.inventory.repository.ProductRepository;
+import com.sipms.inventory.repository.StockMovementRepository;
+import com.sipms.logistics.entity.LowStockAlert;
+import com.sipms.logistics.entity.ReceiptItem;
+import com.sipms.logistics.entity.StockTransferItem;
+import com.sipms.logistics.entity.StockTransferRequest;
+import com.sipms.logistics.enums.AlertSeverity;
+import com.sipms.logistics.enums.AlertStatus;
+import com.sipms.logistics.enums.TransferStatus;
+import com.sipms.logistics.repository.LowStockAlertRepository;
+import com.sipms.logistics.repository.StockTransferRequestRepository;
+import com.sipms.logistics.service.BranchTransferService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,15 +24,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import repository.*;
-import service.BranchTransferService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -268,7 +273,7 @@ public class BranchTransferServiceTest {
         transferRequest.setApprovalDate(LocalDate.now());
         transferRequest.setStatus(TransferStatus.PENDING_APPROVAL);
 
-        var item = new entity.StockTransferItem();
+        var item = new StockTransferItem();
         item.setProduct(laptop);
         item.setRequestedQuantity(8);
         item.setApprovedQuantity(8);
@@ -343,7 +348,7 @@ public class BranchTransferServiceTest {
         transferRequest.setApprovalDate(LocalDate.now());
         transferRequest.setStatus(TransferStatus.APPROVED);
 
-        var item = new entity.StockTransferItem();
+        var item = new StockTransferItem();
         item.setProduct(laptop);
         item.setUnitCost(BigDecimal.valueOf(10000));
         item.setRequestedQuantity(8);
@@ -397,7 +402,7 @@ public class BranchTransferServiceTest {
         transferRequest.setApprovalDate(LocalDate.now());
         transferRequest.setStatus(TransferStatus.IN_TRANSIT);
 
-        var item = new entity.StockTransferItem();
+        var item = new StockTransferItem();
         item.setId(1L);
         item.setProduct(laptop);
         item.setUnitCost(BigDecimal.valueOf(10000));
