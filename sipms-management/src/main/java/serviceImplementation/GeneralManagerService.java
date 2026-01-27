@@ -1,11 +1,14 @@
 package serviceImplementation;
 
+import com.sipms.branch.model.*;
+import com.sipms.logistics.repository.BranchRepository;
+import com.sipms.logistics.repository.DeliveryLogsRepository;
+import com.sipms.logistics.repository.ShippedProductRepo;
+import com.sipms.logistics.repository.SupplierRepository;
 import dto.OrderedProduct;
 import dto.ShipProduct;
 import lombok.extern.slf4j.Slf4j;
-import model.*;
 import org.springframework.stereotype.Service;
-import repository.*;
 
 import java.util.List;
 
