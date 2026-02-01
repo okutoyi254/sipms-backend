@@ -16,6 +16,7 @@
             </node>
             <node kind="database" qname="sipms_database">
               <node kind="schema">
+                <name qname="logistics" />
                 <name qname="hrm" />
                 <name qname="inventory" />
                 <name qname="@" />
@@ -25,7 +26,6 @@
                 <name qname="crm" />
                 <name qname="order" />
                 <name qname="notification" />
-                <name qname="logistics" />
                 <name qname="management" />
                 <name qname="sipms-branch" />
               </node>

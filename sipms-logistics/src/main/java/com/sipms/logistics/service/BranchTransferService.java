@@ -15,6 +15,8 @@ import com.sipms.logistics.entity.ReceiptItem;
 import com.sipms.logistics.entity.StockTransferItem;
 import com.sipms.logistics.entity.StockTransferRequest;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.sipms.branch.model.Branch;
@@ -171,7 +173,7 @@ public class BranchTransferService {
     public StockTransferRequest createManualTransferRequest(
             Long sourceBranchId,
             Long destinationBranchId,
-            List<TransferItemRequest> items,
+            @NotEmpty(message = "At least one item is required") @Valid  List<com.sipms.logistics.dto.TransferItemRequest> items,
             String requestedBy
     ){
         log.info("Creating manual transfer request from Branch {} to Branch {}",
@@ -192,7 +194,7 @@ public class BranchTransferService {
         transfer.setRequestDate(LocalDate.now());
         transfer.setRequestedBy(requestedBy);
 
-        for (TransferItemRequest itemReq : items) {
+        for (com.sipms.logistics.dto.TransferItemRequest itemReq : items) {
 
             Product product= productRepository.findById(itemReq.getProductId())
                     .orElseThrow(() -> new RuntimeException("Product not found: " + itemReq.getProductId()));

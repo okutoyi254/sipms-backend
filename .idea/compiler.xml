@@ -17,6 +17,7 @@
       <directory url="file://$PROJECT_DIR$/sipms-app/src/main/resources/archetype-resources" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/sipms-management/src/main/resources/archetype-resources" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/sipms-common/src/main/resources/archetype-resources" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/db-migration/src/main/resources/archetype-resources" includeSubdirectories="true" />
     </excludeFromCompile>
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
@@ -35,6 +36,7 @@
         <module name="sipms-finance" />
         <module name="sipms-notification" />
         <module name="sipms-procurement" />
+        <module name="db-migration" />
         <module name="sipms-order" />
         <module name="sipms-logistics" />
         <module name="sipms-sales" />
@@ -47,6 +49,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="SIPMS" options="" />
+      <module name="db-migration" options="-parameters" />
       <module name="sipms-analytics" options="-parameters" />
       <module name="sipms-app" options="-parameters" />
       <module name="sipms-branch" options="-parameters" />
