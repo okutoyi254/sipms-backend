@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "low_stock_alerts")
+@Table(name = "low_stock_alerts",schema= "inventory")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(exclude = {"branch","product"})

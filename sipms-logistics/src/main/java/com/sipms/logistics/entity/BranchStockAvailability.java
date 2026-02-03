@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "branch_stock_availability_view")
+@Table(name = "branch_stock_availability_view",schema="inventory")
 @Data
 
 public class BranchStockAvailability {

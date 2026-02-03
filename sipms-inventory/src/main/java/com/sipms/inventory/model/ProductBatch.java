@@ -8,7 +8,7 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "product_batch",
+@Table(name = "product_batch", schema = "inventory",
         uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "batch_number"}),
         indexes = {
                 @Index(name = "idx_batch_number", columnList = "batch_number"),

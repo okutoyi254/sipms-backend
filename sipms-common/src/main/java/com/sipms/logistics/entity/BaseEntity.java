@@ -39,9 +39,6 @@ public abstract class BaseEntity implements Serializable {
     @Column(name = "active",nullable = false)
     private Boolean active= true;
 
-    @Version
-    @Column(name="version")
-    private Long version;
 
     public void safeDelete(){
         this.active=false;
