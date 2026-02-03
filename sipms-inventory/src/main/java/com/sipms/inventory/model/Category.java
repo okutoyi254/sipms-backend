@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "product_categories",uniqueConstraints =@UniqueConstraint(columnNames = "category_name"),
       indexes = {
         @Index(name = "idx_parent_category",columnList ="parent_category_id"),
-      })
+      },schema = "inventory")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

@@ -13,7 +13,8 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "stock_transfer_requests")
+@Table(name = "stock_transfer_requests",schema = "logistics",
+       uniqueConstraints = @UniqueConstraint(columnNames = {"transferNumber"}))
 @Data
 @EqualsAndHashCode(callSuper = true,exclude = {"transferItems"})
 @ToString(exclude = {"sourceBranch","destinationBranch","transferItems"})

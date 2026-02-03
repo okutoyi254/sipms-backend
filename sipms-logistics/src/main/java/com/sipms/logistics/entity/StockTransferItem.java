@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "stock_transfer_items")
+@Table(name = "stock_transfer_items",schema = "logistics")
 @Data
 @EqualsAndHashCode(callSuper = true,exclude = {"transferRequest","product"})
 @ToString(exclude = {"transferRequest","product"})

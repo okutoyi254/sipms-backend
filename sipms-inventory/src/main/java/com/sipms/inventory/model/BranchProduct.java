@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "branch_products",uniqueConstraints = @UniqueConstraint(columnNames =
-        {"product_id","branch_id"}))
+        {"product_id","branch_id"}),schema="inventory")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

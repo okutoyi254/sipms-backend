@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 
-@Table(name = "stock_movements")
+@Table(name = "stock_movements",schema="inventory")
 @EqualsAndHashCode(callSuper = true,exclude = {"product","branch","fromBranch","toBranch"})
 @ToString(exclude = {"product","branch","fromBranch","toBranch"})
 

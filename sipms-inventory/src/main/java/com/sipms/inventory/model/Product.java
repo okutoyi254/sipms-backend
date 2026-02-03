@@ -18,7 +18,14 @@ import java.util.Set;
 @Entity
 @EqualsAndHashCode(callSuper = true,exclude = {"inventoryRecords","branchProducts","stockMovements"})
 @ToString(exclude = {"category","inventoryRecords","branchProducts","stockMovements"})
-
+@Table(name = "products",schema="inventory", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "productCode"),
+        @UniqueConstraint(columnNames = "product_name")
+    },
+       indexes = {
+           @Index(name = "idx_product_code", columnList = "productCode"),
+           @Index(name = "idx_product_name", columnList = "product_name")
+       })
 public class Product extends BaseEntity {
 
 
@@ -59,7 +66,7 @@ public class Product extends BaseEntity {
     private ProductStatus status;
 
     @ElementCollection
-    @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
+    @CollectionTable(name = "product_images",schema = "inventory", joinColumns = @JoinColumn(name = "product_id"))
     @Column(name = "image_url")
     private Set<String> images = new HashSet<>();
 
