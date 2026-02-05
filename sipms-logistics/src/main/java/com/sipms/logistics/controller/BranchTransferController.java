@@ -2,8 +2,7 @@ package com.sipms.logistics.controller;
 
 
 import com.sipms.logistics.dto.*;
-import com.sipms.logistics.entity.LowStockAlert;
-import com.sipms.logistics.entity.ReceiptItem;
+
 import com.sipms.logistics.entity.StockTransferRequest;
 import com.sipms.logistics.service.BranchTransferService;
 import com.sipms.branch.model.Branch;

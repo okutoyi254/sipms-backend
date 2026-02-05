@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode( callSuper = true)
+@EqualsAndHashCode( callSuper = true,onlyExplicitlyIncluded = true)
 public class Category extends BaseEntity {
 
     @Column(name = "category_code",nullable = false,unique = true,length = 50)
