@@ -2,6 +2,7 @@
 <project version="4">
   <component name="DataSourcePerFileMappings">
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/a9aada0f-c336-4da0-82f3-a92fd920447b/console.sql" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
+<<<<<<< Updated upstream
     <file url="file://$PROJECT_DIR$/sipms-inventory/src/main/resources/db/migration/V3__Refactor_product_table.sql" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
     <file url="file://$PROJECT_DIR$/sipms-inventory/src/main/resources/db/migration/V4__modify_product_categories_table.sql" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
     <file url="file://$PROJECT_DIR$/sipms-inventory/src/main/resources/db/migration/V5__Create_branch_table.sql" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
@@ -9,5 +10,9 @@
     <file url="file://$PROJECT_DIR$/sipms-inventory/src/main/resources/db/migration/V7__Create_product_inventory.sql" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
     <file url="file://$PROJECT_DIR$/sipms-inventory/src/main/resources/db/migration/V8_Create_stock_movement_table.sql" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
     <file url="file://$PROJECT_DIR$/sipms-inventory/src/main/resources/db/migration/V9_Create_product_batch_table.sql" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
+=======
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/a9aada0f-c336-4da0-82f3-a92fd920447b/console_1.sql" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
+    <file url="file://$PROJECT_DIR$/db-migration/src/main/resources/db.migration/procurement/V14_create_supplier_table.sql" value="a9aada0f-c336-4da0-82f3-a92fd920447b" />
+>>>>>>> Stashed changes
   </component>
 </project>
