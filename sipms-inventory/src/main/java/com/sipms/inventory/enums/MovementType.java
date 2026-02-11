@@ -1,0 +1,7 @@
+package com.sipms.inventory.enums;
+
+public enum MovementType {
+    PURCHASE_RECEIPT, SALES_SHIPMENT, RETURN_FROM_CUSTOMER,
+    RETURN_TO_SUPPLIER, TRANSFER_IN, TRANSFER_OUT,
+    DAMAGE
+}

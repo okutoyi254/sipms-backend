@@ -1,0 +1,24 @@
+@baseUrl = http://localhost:8080/api/transfers
+
+
+### Create manual transfer request
+POST {{baseUrl}}/manual
+Content-Type: application/json
+
+
+{
+  "sourceBranchId": 1,
+  "destinationBranchId": 2,
+  "items": [
+    {
+      "productId": 1,
+      "quantity": 50
+    },
+    {
+      "productId": 2,
+      "quantity": 30
+    }
+  ],
+  "requestedBy": "Jemoh"
+}
+

@@ -1,15 +1,21 @@
 package unitTest;
 
+import com.sipms.branch.model.Branch;
+import com.sipms.branch.model.Product;
+import com.sipms.branch.model.StockMovement;
+import com.sipms.branch.model.Supplier;
+import com.sipms.logistics.repository.BranchRepository;
+import com.sipms.logistics.repository.DeliveryLogsRepository;
+import com.sipms.logistics.repository.ShippedProductRepo;
+import com.sipms.logistics.repository.SupplierRepository;
 import dto.OrderedProduct;
 import dto.ShipProduct;
-import model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import repository.*;
 import serviceImplementation.GeneralManagerService;
 
 import java.util.*;
