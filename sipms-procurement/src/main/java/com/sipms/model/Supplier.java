@@ -1,5 +1,6 @@
 package com.sipms.model;
 
+import com.sipms.enums.SupplierStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -65,9 +66,9 @@ public class Supplier {
 
     @Size(max = 50)
     @NotNull
-    @ColumnDefault("'PENDING_APPROVAL'")
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 50)
-    private String status;
+    private SupplierStatus status= SupplierStatus.PENDING_APPROVAL;
 
     @ColumnDefault("0")
     @Column(name = "total_orders")
