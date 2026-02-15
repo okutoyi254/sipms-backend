@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @Table(name = "goods_receipt_item", schema = "procurement")
-public class GoodsReceiptItem {
+public class InventoryGoodsReceiptItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
