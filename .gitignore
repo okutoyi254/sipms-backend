@@ -1,4 +1,8 @@
 application-dev.yml
 .idea/
+<<<<<<< HEAD
+*.iml.idea/
+=======
 *.iml
 .target/.idea/
+>>>>>>> feature/procurement
