@@ -3,18 +3,26 @@ package com.sipms.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.SQLDelete;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "inventory_purchase_requisition", schema = "procurement")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@SQLDelete(sql = "UPDATE procurement.inventory_purchase_requisition SET is_deleted = true WHERE id = ?")
+
 public class InventoryPurchaseRequisition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -108,5 +116,60 @@ public class InventoryPurchaseRequisition {
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
+    @OneToMany(mappedBy = "purchaseRequisition", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<InventoryPurchaseRequisitionItem> items = new ArrayList<>();
 
+    @OneToMany(mappedBy = "purchaseRequisition", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<InventoryPurchaseRequisitionApproval> approvals = new ArrayList<>();
+
+    @OneToMany(mappedBy = "purchaseRequisition")
+    @Builder.Default
+    private List<InventoryPurchaseOrder> purchaseOrders = new ArrayList<>();
+
+    @PrePersist
+    protected void onCreate(){
+
+        createdAt = Instant.now();
+        updatedAt = Instant.now();
+
+        if(prDate == null){
+            prDate = LocalDate.now();
+        }
+
+        if(prDate == null){
+            prNumber = generatePRNumber();
+        }
+    }
+
+    @PreUpdate
+    protected void onUpdate(){
+        updatedAt = Instant.now();
+    }
+
+    private String generatePRNumber(){
+
+        return "PR-"+LocalDateTime.now().getYear()+"-"+String.format("%06d",id);
+    }
+
+    // Helper methods
+    public void addItem(InventoryPurchaseRequisitionItem item) {
+        items.add(item);
+        item.setInventoryPurchaseRequisition(this);
+        recalculateTotal();
+    }
+
+    public void removeItem(InventoryPurchaseRequisitionItem item) {
+        items.remove(item);
+        item.setPurchaseRequisition(null);
+        recalculateTotal();
+    }
+
+    public void recalculateTotal() {
+        totalAmount = items.stream()
+                .map(InventoryPurchaseRequisitionItem::getEstimatedTotal)
+                .filter(java.util.Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 }

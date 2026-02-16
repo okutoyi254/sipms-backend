@@ -1,25 +1,35 @@
 package com.sipms.model;
 
+import com.sipms.enums.PRItemStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+@Builder
 @Getter
 @Setter
 @Entity
-@Table(name = "inventory_purchase_requisition_item", schema = "procurement")
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "inventory_purchase_requisition_item",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"pr_id","line_number"})}, schema = "procurement")
 public class InventoryPurchaseRequisitionItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pr_id", nullable = false)
+    private InventoryPurchaseRequisition purchaseRequisition;
 
     @NotNull
     @Column(name = "line_number", nullable = false)
@@ -59,10 +69,11 @@ public class InventoryPurchaseRequisitionItem {
     @Column(name = "required_date")
     private LocalDate requiredDate;
 
-    @Size(max = 50)
-    @ColumnDefault("'PENDING'")
-    @Column(name = "status", length = 50)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 50)
+    @Builder.Default
+    private PRItemStatus status = PRItemStatus.PENDING;
+
 
     @NotNull
     @ColumnDefault("CURRENT_TIMESTAMP")
@@ -74,5 +85,27 @@ public class InventoryPurchaseRequisitionItem {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+    @OneToMany(mappedBy = "prItem")
+    @Builder.Default
+    private List<InventoryPurchaseOrderItem> purchaseOrderItems = new ArrayList<>();
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = Instant.now();
+        updatedAt = Instant.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = Instant.now();
+    }
+
+    public BigDecimal calculateEstimatedTotal(){
+
+        if(quantityRequested != null && estimatedUnitPrice !=null){
+            return quantityRequested.multiply(estimatedUnitPrice).setScale(2);
+        }
+        return BigDecimal.ZERO;
+    }
 
 }

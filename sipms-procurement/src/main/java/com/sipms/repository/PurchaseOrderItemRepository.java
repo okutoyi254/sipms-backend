@@ -1,5 +1,6 @@
 package com.sipms.repository;
 
+import com.sipms.enums.PRItemStatus;
 import com.sipms.model.InventoryPurchaseOrderItem;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,7 +17,7 @@ public interface PurchaseOrderItemRepository {
     List<InventoryPurchaseOrderItem> findByPurchaseOrderId(Long poId);
 
     // Find by PO and status
-    List<InventoryPurchaseOrderItem> findByPurchaseOrderIdAndStatus(Long poId, POItemStatus status);
+    List<InventoryPurchaseOrderItem> findByPurchaseOrderIdAndStatus(Long poId, PRItemStatus status);
 
     // Find by product
     List<InventoryPurchaseOrderItem> findByProductId(Long productId);

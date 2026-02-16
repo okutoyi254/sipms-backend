@@ -1,5 +1,6 @@
 package com.sipms.repository;
 
+import com.sipms.enums.PRItemStatus;
 import com.sipms.model.InventoryPurchaseRequisitionItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

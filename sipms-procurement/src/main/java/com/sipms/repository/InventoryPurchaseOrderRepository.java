@@ -1,5 +1,6 @@
 package com.sipms.repository;
 
+import com.sipms.enums.PRStatus;
 import com.sipms.model.InventoryPurchaseOrder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,9 +29,9 @@ public interface InventoryPurchaseOrderRepository extends JpaRepository<Inventor
     Page<InventoryPurchaseOrder> findBySupplierId(Long supplierId, Pageable pageable);
 
     // Find by status
-    List<InventoryPurchaseOrder> findByStatus(POStatus status);
+    List<InventoryPurchaseOrder> findByStatus(PRStatus status);
 
-    Page<InventoryPurchaseOrder> findByStatus(POStatus status, Pageable pageable);
+    Page<InventoryPurchaseOrder> findByStatus(PRStatus status, Pageable pageable);
 
     // Find by PR
     List<InventoryPurchaseOrder> findByPurchaseRequisitionId(Long prId);
@@ -63,11 +64,11 @@ public interface InventoryPurchaseOrderRepository extends JpaRepository<Inventor
     List<InventoryPurchaseOrder> findPendingReceipt();
 
     // Count by status
-    long countByStatus(POStatus status);
+    long countByStatus(PRStatus status);
 
     // Sum total amount by status
     @Query("SELECT SUM(po.totalAmount) FROM InventoryPurchaseOrder po WHERE po.status = :status AND po.isDeleted = false")
-    Double sumTotalAmountByStatus(@Param("status") POStatus status);
+    Double sumTotalAmountByStatus(@Param("status") PRStatus status);
 
     // Find by created by
     List<InventoryPurchaseOrder> findByCreatedBy(Long userId);
@@ -82,7 +83,7 @@ public interface InventoryPurchaseOrderRepository extends JpaRepository<Inventor
     // Supplier performance - on-time delivery
     @Query("SELECT po.supplier.id, COUNT(po), " +
             "SUM(CASE WHEN po.status = 'FULLY_RECEIVED' AND " +
-            "(SELECT MAX(grn.grnDate) FROM InventoryGoodsReceiptNote grn WHERE grn.purchaseOrder.id = po.id) <= po.deliveryDate " +
+            "(SELECT MAX(grn.grnDate) FROM InventoryGoodsReceiptNote grn WHERE grn.id = po.id) <= po.deliveryDate " +
             "THEN 1 ELSE 0 END) as onTimeCount " +
             "FROM InventoryPurchaseOrder po WHERE po.status IN ('FULLY_RECEIVED', 'CLOSED') AND " +
             "po.poDate >= :fromDate AND po.isDeleted = false GROUP BY po.supplier.id")

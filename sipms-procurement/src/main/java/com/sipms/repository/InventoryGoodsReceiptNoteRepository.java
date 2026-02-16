@@ -1,5 +1,6 @@
 package com.sipms.repository;
 
+import com.sipms.enums.GRNStatus;
 import com.sipms.model.InventoryGoodsReceiptNote;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,10 +37,10 @@ public interface InventoryGoodsReceiptNoteRepository extends JpaRepository<Inven
             "grn.isDeleted = false ORDER BY grn.grnDate ASC")
     List<InventoryGoodsReceiptNote> findPendingInspection();
 
-    // Find with discrepancies
-    @Query("SELECT grn FROM InventoryGoodsReceiptNote grn WHERE grn.discrepancyNoted = true AND " +
-            "grn.isDeleted = false ORDER BY grn.grnDate DESC")
-    List<InventoryGoodsReceiptNote> findWithDiscrepancies();
+//    // Find with discrepancies
+//    @Query("SELECT grn FROM InventoryGoodsReceiptNote grn WHERE grn. = true AND " +
+//            "grn.isDeleted = false ORDER BY grn.grnDate DESC")
+//    List<InventoryGoodsReceiptNote> findWithDiscrepancies();
 
     // Find by date range
     @Query("SELECT grn FROM InventoryGoodsReceiptNote grn WHERE grn.grnDate BETWEEN :startDate AND :endDate AND grn.isDeleted = false")
@@ -64,7 +65,7 @@ public interface InventoryGoodsReceiptNoteRepository extends JpaRepository<Inven
     long countByStatus(GRNStatus status);
 
     // Find GRNs ready to post
-    @Query("SELECT grn FROM InventoryGoodsReceiptNote grn WHERE grn.status = 'APPROVED' AND grn.postedAt IS NULL AND " +
+    @Query("SELECT grn FROM InventoryGoodsReceiptNote grn WHERE grn.status = 'APPROVED'  AND " +
             "grn.isDeleted = false")
     List<InventoryGoodsReceiptNote> findReadyToPost();
 
@@ -73,9 +74,5 @@ public interface InventoryGoodsReceiptNoteRepository extends JpaRepository<Inven
             "WHERE grn.isDeleted = false GROUP BY grn.status")
     List<Object[]> getDashboardStats();
 
-    // Quality metrics
-    @Query("SELECT grn.inspectionResult, COUNT(grn) FROM InventoryGoodsReceiptNote grn " +
-            "WHERE grn.grnDate >= :fromDate AND grn.isDeleted = false GROUP BY grn.inspectionResult")
-    List<Object[]> getQualityMetrics(@Param("fromDate") LocalDate fromDate);
 }
 

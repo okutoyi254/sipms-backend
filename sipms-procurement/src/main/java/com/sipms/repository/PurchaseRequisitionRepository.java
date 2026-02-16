@@ -1,5 +1,6 @@
 package com.sipms.repository;
 
+import com.sipms.enums.PRStatus;
 import com.sipms.model.InventoryPurchaseRequisition;
 import jakarta.annotation.Priority;
 import org.springframework.data.domain.Page;

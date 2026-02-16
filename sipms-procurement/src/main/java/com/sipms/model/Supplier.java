@@ -4,18 +4,23 @@ import com.sipms.enums.SupplierStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.SQLDelete;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+@Builder
 @Getter
 @Setter
 @Entity
 @Table(name = "supplier", schema = "procurement")
+@NoArgsConstructor
+@AllArgsConstructor
+@SQLDelete(sql = "UPDATE supplier SET is_deleted = true WHERE id = ?")
 public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -127,10 +132,58 @@ public class Supplier {
 
     @ColumnDefault("(((((COALESCE(quality_rating, 0) + COALESCE(delivery_rating, 0)) + COALESCE(price_rating, 0)) + COALESCE(service_rating, 0))))")
     @Column(name = "overall_rating", precision = 3, scale = 2)
-    private BigDecimal overallRating;
+    private double overallRating;
 
     @Column(name = "comments", length = Integer.MAX_VALUE)
     private String comments;
 
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = Instant.now();
+        updatedAt = Instant.now();
+        if (supplierCode == null) {
+            supplierCode = generateSupplierCode();
+        }
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = Instant.now();
+    }
+
+    private String generateSupplierCode() {
+        // Implementation: SUP-YYYY-XXXXXX
+        // Should use sequence or repository method
+        return "SUP-" + LocalDate.now().getYear() + "-" + String.format("%06d", id);
+    }
+
+    @OneToMany(mappedBy = "supplier")
+    @Builder.Default
+    private List<InventoryPurchaseOrder> purchaseOrders = new ArrayList<>();
+
+    // Calculate overall rating in Java if needed
+    public double calculateOverallRating() {
+        int count = 0;
+        int sum = 0;
+
+        if (qualityRating != null) {
+            sum += qualityRating;
+            count++;
+        }
+        if (deliveryRating != null) {
+            sum += deliveryRating;
+            count++;
+        }
+        if (priceRating != null) {
+            sum += priceRating;
+            count++;
+        }
+        if (serviceRating != null) {
+            sum += serviceRating;
+            count++;
+        }
+
+        return count > 0 ? ((double) sum / count) : 0;
+    }
 }
