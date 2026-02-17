@@ -1,6 +1,7 @@
 package com.sipms.model;
 
 import com.sipms.enums.SupplierStatus;
+import com.sipms.enums.SupplierType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -67,7 +68,7 @@ public class Supplier {
     @Size(max = 50)
     @NotNull
     @Column(name = "supplier_type", nullable = false, length = 50)
-    private String supplierType;
+    private SupplierType supplierType;
 
     @Size(max = 50)
     @NotNull
@@ -130,26 +131,25 @@ public class Supplier {
     @Column(name = "service_rating")
     private Integer serviceRating;
 
-    @ColumnDefault("(((((COALESCE(quality_rating, 0) + COALESCE(delivery_rating, 0)) + COALESCE(price_rating, 0)) + COALESCE(service_rating, 0))))")
-    @Column(name = "overall_rating", precision = 3, scale = 2)
+    @ColumnDefault("0.00")
+    @Column(name = "overall_rating", precision = 5, scale = 2)
     private double overallRating;
 
     @Column(name = "comments", length = Integer.MAX_VALUE)
     private String comments;
 
 
-    @PrePersist
-    protected void onCreate() {
-        createdAt = Instant.now();
-        updatedAt = Instant.now();
-        if (supplierCode == null) {
+    @PostPersist
+    protected void onPostPersist() {
+        if (supplierCode == null || supplierCode.isBlank()) {
             supplierCode = generateSupplierCode();
         }
     }
-
     @PreUpdate
     protected void onUpdate() {
         updatedAt = Instant.now();
+        // Keep overallRating in sync whenever ratings change
+        overallRating = calculateOverallRating();
     }
 
     private String generateSupplierCode() {
@@ -167,23 +167,11 @@ public class Supplier {
         int count = 0;
         int sum = 0;
 
-        if (qualityRating != null) {
-            sum += qualityRating;
-            count++;
-        }
-        if (deliveryRating != null) {
-            sum += deliveryRating;
-            count++;
-        }
-        if (priceRating != null) {
-            sum += priceRating;
-            count++;
-        }
-        if (serviceRating != null) {
-            sum += serviceRating;
-            count++;
-        }
+        if (qualityRating != null)  { sum += qualityRating;  count++; }
+        if (deliveryRating != null) { sum += deliveryRating; count++; }
+        if (priceRating != null)    { sum += priceRating;    count++; }
+        if (serviceRating != null)  { sum += serviceRating;  count++; }
 
-        return count > 0 ? ((double) sum / count) : 0;
+        return count > 0 ? (double) sum / count : 0.0;
     }
 }

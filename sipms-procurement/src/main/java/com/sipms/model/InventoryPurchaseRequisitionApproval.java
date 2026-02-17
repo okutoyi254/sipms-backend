@@ -20,6 +20,15 @@ public class InventoryPurchaseRequisitionApproval {
     private Integer id;
 
     @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "pr_id", nullable = false)
+    private InventoryPurchaseRequisition purchaseRequisition;
+
+    @NotNull
+    @Column(name = "approval_level", nullable = false)
+    private Integer approvalLevel;
+
+    @NotNull
     @Column(name = "approver_id", nullable = false)
     private Long approverId;
 
@@ -42,5 +51,17 @@ public class InventoryPurchaseRequisitionApproval {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = Instant.now();
+        updatedAt = Instant.now();
+        if (approvalStatus == null) {
+            approvalStatus = "PENDING";
+        }
+    }
 
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = Instant.now();
+    }
 }

@@ -1,5 +1,6 @@
 package com.sipms.model;
 
+import com.sipms.enums.GRNStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -10,6 +11,8 @@ import org.hibernate.annotations.ColumnDefault;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,10 +24,19 @@ public class InventoryGoodsReceiptNote {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "supplier_id", nullable = false)
+    private Supplier supplier;
+
     @Size(max = 50)
     @NotNull
     @Column(name = "grn_number", nullable = false, length = 50)
     private String grnNumber;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "po_id")
+    private InventoryPurchaseOrder purchaseOrder;
 
     @NotNull
     @ColumnDefault("CURRENT_DATE")
@@ -93,5 +105,24 @@ public class InventoryGoodsReceiptNote {
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
+    @OneToMany(mappedBy = "grn", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<InventoryGoodsReceiptItem> items = new ArrayList<>();
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = Instant.now();
+        updatedAt = Instant.now();
+        if (grnDate == null) {
+            grnDate = LocalDate.now();
+        }
+        if (status == null) {
+            status = String.valueOf(GRNStatus.DRAFT);
+        }
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = Instant.now();
+    }
 
 }

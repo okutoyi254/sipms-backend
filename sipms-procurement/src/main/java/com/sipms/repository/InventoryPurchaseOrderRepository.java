@@ -34,7 +34,7 @@ public interface InventoryPurchaseOrderRepository extends JpaRepository<Inventor
     Page<InventoryPurchaseOrder> findByStatus(PRStatus status, Pageable pageable);
 
     // Find by PR
-    List<InventoryPurchaseOrder> findByPurchaseRequisitionId(Long prId);
+    List<InventoryPurchaseOrder> findByPrId(Long prId);
 
     // Find active POs for supplier
     @Query("SELECT po FROM InventoryPurchaseOrder po WHERE po.supplier.id = :supplierId AND " +
@@ -83,7 +83,7 @@ public interface InventoryPurchaseOrderRepository extends JpaRepository<Inventor
     // Supplier performance - on-time delivery
     @Query("SELECT po.supplier.id, COUNT(po), " +
             "SUM(CASE WHEN po.status = 'FULLY_RECEIVED' AND " +
-            "(SELECT MAX(grn.grnDate) FROM InventoryGoodsReceiptNote grn WHERE grn.id = po.id) <= po.deliveryDate " +
+            "(SELECT MAX(grn.grnDate) FROM InventoryGoodsReceiptNote grn WHERE grn.purchaseOrder.id = po.id) <= po.deliveryDate " +
             "THEN 1 ELSE 0 END) as onTimeCount " +
             "FROM InventoryPurchaseOrder po WHERE po.status IN ('FULLY_RECEIVED', 'CLOSED') AND " +
             "po.poDate >= :fromDate AND po.isDeleted = false GROUP BY po.supplier.id")

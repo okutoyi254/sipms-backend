@@ -11,7 +11,7 @@ import java.util.List;
 public interface InventoryGoodsReceiptItemRepository extends JpaRepository<InventoryGoodsReceiptItem,Long> {
 
     // Find by GRN
-    List<InventoryGoodsReceiptItem> findByGoodsReceiptNoteId(Long grnId);
+    List<InventoryGoodsReceiptItem> findByGrnId(Long grnId);
 
     // Find by PO item
     List<InventoryGoodsReceiptItem> findByPoItemId(Long poItemId);
@@ -37,7 +37,7 @@ public interface InventoryGoodsReceiptItemRepository extends JpaRepository<Inven
                                              @Param("endDate") LocalDate endDate);
 
     // Count items by GRN
-    long countByGoodsReceiptNoteId(Long grnId);
+    long countByGrnId(Long grnId);
 
     // Sum quantities by product
     @Query("SELECT SUM(gri.quantityAccepted) FROM InventoryGoodsReceiptItem gri WHERE gri.productId = :productId AND " +

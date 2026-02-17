@@ -1,20 +1,27 @@
 package com.sipms.model;
 
+import com.sipms.enums.PRStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.SQLDelete;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "inventory_purchase_order", schema = "procurement")
+@SQLDelete(sql = "UPDATE procurement.inventory_purchase_order SET is_deleted = true WHERE id = ?")
 public class InventoryPurchaseOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +46,14 @@ public class InventoryPurchaseOrder {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pr_id")
     private InventoryPurchaseRequisition pr;
+
+    @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<InventoryPurchaseOrderItem> items = new ArrayList<>();
+
+    @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<InventoryGoodsReceiptNote> goodsReceiptNotes = new ArrayList<>();
 
     @Size(max = 50)
     @NotNull
@@ -105,5 +120,21 @@ public class InventoryPurchaseOrder {
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = Instant.now();
+        updatedAt = Instant.now();
+        if (poDate == null) {
+            poDate = LocalDate.now();
+        }
+        if (status == null) {
+            status = String.valueOf(PRStatus.DRAFT);
+        }
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = Instant.now();
+    }
 
 }

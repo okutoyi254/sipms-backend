@@ -2,6 +2,7 @@ package com.sipms.repository;
 
 import com.sipms.enums.PRItemStatus;
 import com.sipms.model.InventoryPurchaseOrderItem;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PurchaseOrderItemRepository {
+public interface PurchaseOrderItemRepository extends JpaRepository<InventoryPurchaseOrderItem,Long> {
 
     // Find by PO
     List<InventoryPurchaseOrderItem> findByPurchaseOrderId(Long poId);

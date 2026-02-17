@@ -22,8 +22,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @SQLDelete(sql = "UPDATE procurement.inventory_purchase_requisition SET is_deleted = true WHERE id = ?")
-
 public class InventoryPurchaseRequisition {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -124,39 +124,47 @@ public class InventoryPurchaseRequisition {
     @Builder.Default
     private List<InventoryPurchaseRequisitionApproval> approvals = new ArrayList<>();
 
-    @OneToMany(mappedBy = "purchaseRequisition")
+    @OneToMany(mappedBy = "pr")
     @Builder.Default
     private List<InventoryPurchaseOrder> purchaseOrders = new ArrayList<>();
 
     @PrePersist
-    protected void onCreate(){
-
+    protected void onCreate() {
         createdAt = Instant.now();
         updatedAt = Instant.now();
 
-        if(prDate == null){
+        if (prDate == null) {
             prDate = LocalDate.now();
         }
 
-        if(prDate == null){
+        if (status == null) {
+            status = "DRAFT";
+        }
+        if (priority == null) {
+            priority = "MEDIUM";
+        }
+    }
+
+    @PostPersist
+    protected void onPostPersist() {
+        if (prNumber == null || prNumber.isBlank()) {
             prNumber = generatePRNumber();
         }
     }
 
     @PreUpdate
-    protected void onUpdate(){
+    protected void onUpdate() {
         updatedAt = Instant.now();
     }
 
-    private String generatePRNumber(){
-
-        return "PR-"+LocalDateTime.now().getYear()+"-"+String.format("%06d",id);
+    private String generatePRNumber() {
+        return "PR-" + LocalDateTime.now().getYear() + "-" + String.format("%06d", id);
     }
 
     // Helper methods
     public void addItem(InventoryPurchaseRequisitionItem item) {
         items.add(item);
-        item.setInventoryPurchaseRequisition(this);
+        item.setPurchaseRequisition(this);
         recalculateTotal();
     }
 

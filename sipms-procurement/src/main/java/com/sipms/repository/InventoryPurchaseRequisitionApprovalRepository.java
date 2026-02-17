@@ -1,5 +1,6 @@
 package com.sipms.repository;
 
+import com.sipms.model.InventoryPurchaseRequisitionApproval;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -7,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface InventoryPurchaseRequisitionApproval extends JpaRepository<InventoryPurchaseRequisitionApproval,Long> {
+public interface InventoryPurchaseRequisitionApprovalRepository extends JpaRepository<InventoryPurchaseRequisitionApproval,Long> {
 
     List<InventoryPurchaseRequisitionApproval> findByPurchaseRequisitionIdOrderByApprovalLevelAsc(Long prId);
 

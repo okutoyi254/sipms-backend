@@ -31,7 +31,7 @@ public interface SupplierRepository extends JpaRepository<Supplier,Long>, JpaSpe
     @Query("SELECT s FROM Supplier s WHERE s.preferredSupplier = true AND s.status = 'ACTIVE' AND s.isDeleted = false")
     List<Supplier> findPreferredSuppliers();
 
-    List<Supplier>findSupplierType(SupplierType supplierType);
+    List<Supplier>findBySupplierType(SupplierType supplierType);
 
     @Query("SELECT s FROM Supplier s WHERE s.overallRating >= :minRating AND s.status = 'ACTIVE' AND s.isDeleted = false")
     List<Supplier> findSuppliersByMinimumRating(@Param("minRating") double minRating);
@@ -61,7 +61,7 @@ public interface SupplierRepository extends JpaRepository<Supplier,Long>, JpaSpe
     );
 
     @Query("SELECT sr.overallRating FROM Supplier sr WHERE sr.id = :supplierId")
-    Double calculateAverageRating(@Param("supplierId") Long supplierId);
+    Double getOverallRating(@Param("supplierId") Long supplierId);
 
 
 

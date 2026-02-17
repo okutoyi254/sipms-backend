@@ -1,9 +1,12 @@
 package com.sipms.model;
 
+import com.sipms.enums.PRItemStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -14,6 +17,8 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "inventory_purchase_order_item", schema = "procurement")
 public class InventoryPurchaseOrderItem {
     @Id
@@ -24,6 +29,11 @@ public class InventoryPurchaseOrderItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pr_item_id")
     private InventoryPurchaseRequisitionItem prItem;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "po_id", nullable = false)
+    private InventoryPurchaseOrder purchaseOrder;
 
     @NotNull
     @Column(name = "line_number", nullable = false)
@@ -103,5 +113,28 @@ public class InventoryPurchaseOrderItem {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = Instant.now();
+        updatedAt = Instant.now();
+        if (status == null) {
+            status = String.valueOf(PRItemStatus.PENDING);
+        }
+        recalculateLineTotal();
+    }
 
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = Instant.now();
+        recalculateLineTotal();
+    }
+
+    public void recalculateLineTotal() {
+        if (quantityOrdered != null && unitPrice != null) {
+            BigDecimal gross = quantityOrdered.multiply(unitPrice);
+            BigDecimal disc = discountAmount != null ? discountAmount : BigDecimal.ZERO;
+            BigDecimal tax = taxAmount != null ? taxAmount : BigDecimal.ZERO;
+            lineTotal = gross.subtract(disc).add(tax).setScale(2, java.math.RoundingMode.HALF_UP);
+        }
+    }
 }
