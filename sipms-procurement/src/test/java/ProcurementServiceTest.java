@@ -17,6 +17,7 @@ import com.sipms.repository.PurchaseRequisitionRepository;
 import com.sipms.repository.SupplierRepository;
 import com.sipms.service.impl.ProcurementServiceImpl;
 import com.sipms.util.ValidationUtil;
+import jakarta.validation.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,8 +32,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -185,4 +185,18 @@ public class ProcurementServiceTest {
         verify(requisitionRepository, times(1)).save(any(InventoryPurchaseRequisition.class));
         verify(validationUtil, times(1)).validateCreateRequisitionRequest(any());
     }
+
+    @Test
+    void createRequisition_ValidationFailure() {
+        // Arrange
+        doThrow(new ValidationException("Validation failed"))
+                .when(validationUtil).validateCreateRequisitionRequest(any());
+
+        // Act & Assert
+        assertThrows(ValidationException.class, () -> {
+            procurementService.createRequisition(createRequisitionRequest);
+        });
+        verify(requisitionRepository, never()).save(any());
+    }
+
 }
