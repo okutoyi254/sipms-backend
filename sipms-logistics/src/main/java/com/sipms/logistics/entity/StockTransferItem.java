@@ -37,6 +37,7 @@ public class StockTransferItem extends BaseEntity{
     @Column(length = 100)
     private String batchNumber;
 
-    @Column(precision = 19, scale = 2)
-    private BigDecimal unitCost;
+    @Column(nullable = false)
+    private Double unitCost;
+
 }

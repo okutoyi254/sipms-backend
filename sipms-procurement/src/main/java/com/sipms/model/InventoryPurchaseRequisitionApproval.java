@@ -3,21 +3,23 @@ package com.sipms.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
 
 @Getter
 @Setter
+@Builder
 @Entity
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Table(name = "inventory_purchase_requisition_approval", schema = "procurement")
-public class InventoryPurchaseRequisitionApproval {
+public class InventoryPurchaseRequisitionApproval{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -38,8 +40,6 @@ public class InventoryPurchaseRequisitionApproval {
     @Column(name = "approval_status", nullable = false, length = 20)
     private String approvalStatus;
 
-    @Column(name = "approved_at")
-    private Instant approvedAt;
 
     @NotNull
     @ColumnDefault("CURRENT_TIMESTAMP")

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 
@@ -23,10 +24,11 @@ import java.util.List;
 @Table(name = "inventory_purchase_order", schema = "procurement")
 @SQLDelete(sql = "UPDATE procurement.inventory_purchase_order SET is_deleted = true WHERE id = ?")
 public class InventoryPurchaseOrder {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Size(max = 50)
     @NotNull
@@ -66,19 +68,12 @@ public class InventoryPurchaseOrder {
     private LocalDate deliveryDate;
 
     @Column(name = "delivery_address", length = Integer.MAX_VALUE)
-    private String deliveryAddress;
-
-    @Size(max = 100)
-    @Column(name = "payment_terms", length = 100)
-    private String paymentTerms;
+    private String deliveryDestination;
 
     @Size(max = 50)
     @Column(name = "payment_method", length = 50)
     private String paymentMethod;
 
-    @ColumnDefault("0.00")
-    @Column(name = "subtotal", precision = 15, scale = 2)
-    private BigDecimal subtotal;
 
     @ColumnDefault("0.00")
     @Column(name = "tax_amount", precision = 15, scale = 2)
@@ -88,9 +83,6 @@ public class InventoryPurchaseOrder {
     @Column(name = "discount_amount", precision = 15, scale = 2)
     private BigDecimal discountAmount;
 
-    @ColumnDefault("0.00")
-    @Column(name = "shipping_cost", precision = 15, scale = 2)
-    private BigDecimal shippingCost;
 
     @ColumnDefault("0.00")
     @Column(name = "total_amount", precision = 15, scale = 2)
@@ -100,8 +92,6 @@ public class InventoryPurchaseOrder {
     @Column(name = "created_by", nullable = false)
     private Long createdBy;
 
-    @Column(name = "acknowledged_at")
-    private Instant acknowledgedAt;
 
     @Column(name = "updated_by")
     private Long updatedBy;
@@ -119,6 +109,7 @@ public class InventoryPurchaseOrder {
     @ColumnDefault("false")
     @Column(name = "is_deleted")
     private Boolean isDeleted;
+
 
     @PrePersist
     protected void onCreate() {

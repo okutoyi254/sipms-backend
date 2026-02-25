@@ -242,7 +242,7 @@ public class BranchTransferService {
             }
 
             item.setApprovedQuantity(approvedQty);
-            item.setUnitCost(sourceInventory.getAverageCost());
+            item.setUnitCost(sourceInventory.getAverageCost().doubleValue());
 
         }
             transfer.setStatus(TransferStatus.APPROVED);
@@ -299,13 +299,14 @@ public class BranchTransferService {
 
                 inventoryRepository.save(sourceInventory);
 
+                BigDecimal unitCost= BigDecimal.valueOf(item.getUnitCost());
                 createStockMovement(
                         item.getProduct(),
                         transferRequest.getSourceBranch(),
                         -item.getApprovedQuantity(),
                         MovementType.TRANSFER_OUT,
                         transferRequest.getTransferNumber(),
-                        item.getUnitCost(),
+                        unitCost,
                         "Transfer to " + transferRequest.getDestinationBranch().getBranchName(),
                         shippedBy
                 );
@@ -372,8 +373,10 @@ public class BranchTransferService {
              destInv.setQuantityOnHand(destInv.getQuantityOnHand() + goodQuantity);
              destInv.setQuantityAvailable(destInv.getQuantityAvailable() + goodQuantity);
 
+             BigDecimal unitCost= BigDecimal.valueOf(item.getUnitCost());
+
              // Update average cost
-             updateAverageCost(destInv, goodQuantity, item.getUnitCost());
+             updateAverageCost(destInv, goodQuantity, unitCost);
 
              inventoryRepository.save(destInv);
 
@@ -383,7 +386,7 @@ public class BranchTransferService {
                      goodQuantity,
                      MovementType.TRANSFER_IN,
                      transfer.getTransferNumber(),
-                     item.getUnitCost(),
+                     unitCost,
                      "Transfer from " + transfer.getSourceBranch().getBranchName(),
                      receivedBy
              );
@@ -395,7 +398,7 @@ public class BranchTransferService {
                          receipt.getDamagedQuantity(),
                          MovementType.DAMAGE,
                          transfer.getTransferNumber(),
-                         item.getUnitCost(),
+                         unitCost,
                          "Damaged during transfer",
                          receivedBy
                  );

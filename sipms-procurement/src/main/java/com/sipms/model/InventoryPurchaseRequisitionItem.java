@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
@@ -13,19 +14,33 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
 @Getter
 @Setter
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
+@SuperBuilder
 @Table(name = "inventory_purchase_requisition_item",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"pr_id","line_number"})}, schema = "procurement")
-public class InventoryPurchaseRequisitionItem {
+public class InventoryPurchaseRequisitionItem{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
+
+    public InventoryPurchaseRequisitionItem(
+            InventoryPurchaseRequisition purchaseRequisition,
+            String lineNumber,
+            String productCode,
+            String unitOfMeasure,
+            BigDecimal quantityRequested) {
+
+        this.purchaseRequisition = purchaseRequisition;
+        this.lineNumber = lineNumber;
+        this.productCode = productCode;
+        this.unitOfMeasure = unitOfMeasure;
+        this.quantityRequested = quantityRequested;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pr_id", nullable = false)
@@ -33,7 +48,7 @@ public class InventoryPurchaseRequisitionItem {
 
     @NotNull
     @Column(name = "line_number", nullable = false)
-    private Integer lineNumber;
+    private String lineNumber;
 
     @Column(name = "product_id")
     private Integer productId;
@@ -42,10 +57,6 @@ public class InventoryPurchaseRequisitionItem {
     @Column(name = "product_code", length = 100)
     private String productCode;
 
-    @Size(max = 255)
-    @NotNull
-    @Column(name = "product_name", nullable = false)
-    private String productName;
 
     @Size(max = 20)
     @NotNull
@@ -57,17 +68,16 @@ public class InventoryPurchaseRequisitionItem {
     private BigDecimal quantityRequested;
 
     @Column(name = "quantity_approved", precision = 15, scale = 3)
+    @ColumnDefault("0")
     private BigDecimal quantityApproved;
 
-    @Column(name = "estimated_unit_price", precision = 15, scale = 2)
-    private BigDecimal estimatedUnitPrice;
+    @Column(name = "estimated_unit_cost", precision = 15, scale = 2)
+    private BigDecimal estimatedUnitCost;
 
     @ColumnDefault("(quantity_requested * COALESCE(estimated_unit_price, (0)))")
     @Column(name = "estimated_total", precision = 15, scale = 2)
     private BigDecimal estimatedTotal;
 
-    @Column(name = "required_date")
-    private LocalDate requiredDate;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 50)
@@ -89,6 +99,7 @@ public class InventoryPurchaseRequisitionItem {
     @Builder.Default
     private List<InventoryPurchaseOrderItem> purchaseOrderItems = new ArrayList<>();
 
+
     @PrePersist
     protected void onCreate() {
         createdAt = Instant.now();
@@ -102,8 +113,8 @@ public class InventoryPurchaseRequisitionItem {
 
     public BigDecimal calculateEstimatedTotal(){
 
-        if(quantityRequested != null && estimatedUnitPrice !=null){
-            return quantityRequested.multiply(estimatedUnitPrice).setScale(2);
+        if(quantityRequested != null && estimatedUnitCost!=null){
+            return quantityRequested.multiply(estimatedUnitCost).setScale(2);
         }
         return BigDecimal.ZERO;
     }

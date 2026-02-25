@@ -9,6 +9,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,7 +23,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE supplier SET is_deleted = true WHERE id = ?")
-public class Supplier {
+public class Supplier{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -65,10 +67,6 @@ public class Supplier {
     @Column(name = "city", length = 100)
     private String city;
 
-    @Size(max = 50)
-    @NotNull
-    @Column(name = "supplier_type", nullable = false, length = 50)
-    private SupplierType supplierType;
 
     @Size(max = 50)
     @NotNull
@@ -133,7 +131,7 @@ public class Supplier {
 
     @ColumnDefault("0.00")
     @Column(name = "overall_rating", precision = 5, scale = 2)
-    private double overallRating;
+    private BigDecimal overallRating;
 
     @Column(name = "comments", length = Integer.MAX_VALUE)
     private String comments;
@@ -148,22 +146,19 @@ public class Supplier {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = Instant.now();
-        // Keep overallRating in sync whenever ratings change
         overallRating = calculateOverallRating();
     }
 
     private String generateSupplierCode() {
-        // Implementation: SUP-YYYY-XXXXXX
-        // Should use sequence or repository method
-        return "SUP-" + LocalDate.now().getYear() + "-" + String.format("%06d", id);
+        return "SUP-" + LocalDate.now().getYear() + "-" + String.format("%06d",id);
     }
 
     @OneToMany(mappedBy = "supplier")
     @Builder.Default
     private List<InventoryPurchaseOrder> purchaseOrders = new ArrayList<>();
 
-    // Calculate overall rating in Java if needed
-    public double calculateOverallRating() {
+    // Calculate overall rating
+    public BigDecimal calculateOverallRating() {
         int count = 0;
         int sum = 0;
 
@@ -172,6 +167,6 @@ public class Supplier {
         if (priceRating != null)    { sum += priceRating;    count++; }
         if (serviceRating != null)  { sum += serviceRating;  count++; }
 
-        return count > 0 ? (double) sum / count : 0.0;
+        return BigDecimal.valueOf(count > 0 ? (double) sum / count : 0.0);
     }
 }
