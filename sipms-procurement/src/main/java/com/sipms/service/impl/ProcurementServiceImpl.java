@@ -10,7 +10,7 @@ import com.sipms.enums.PRStatus;
 import com.sipms.mapper.ProcurementMapper;
 import com.sipms.model.InventoryPurchaseRequisition;
 import com.sipms.model.InventoryPurchaseRequisitionItem;
-import com.sipms.repository.InventoryPurchaseRequisitionRepository;
+import com.sipms.repository.PurchaseRequisitionRepository;
 import com.sipms.service.ProcurementService;
 import com.sipms.util.ValidationUtil;
 import jakarta.transaction.Transactional;
@@ -18,12 +18,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.Year;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 @Transactional
 @Slf4j
@@ -32,7 +28,7 @@ import java.util.stream.Collectors;
 public class ProcurementServiceImpl implements ProcurementService {
 
     private final ValidationUtil validationUtil;
-    private final InventoryPurchaseRequisitionRepository requisitionRepository;
+    private final PurchaseRequisitionRepository requisitionRepository;
     private final ProcurementMapper mapper;
 
     @Override

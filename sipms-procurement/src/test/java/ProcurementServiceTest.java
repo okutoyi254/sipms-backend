@@ -40,12 +40,13 @@ import static org.mockito.Mockito.*;
 public class ProcurementServiceTest {
 
 
-    @Mock
-    private PurchaseRequisitionRepository requisitionRepository;
+
 
     @Mock
     private InventoryPurchaseOrderRepository purchaseOrderRepository;
 
+    @Mock
+    private PurchaseRequisitionRepository requisitionRepository;
 
     @Mock
     private SupplierRepository vendorRepository;
@@ -64,6 +65,8 @@ public class ProcurementServiceTest {
     private InventoryPurchaseOrder purchaseOrder;
     private PurchaseOrderDTO purchaseOrderDTO;
     private Supplier supplier;
+
+    @Mock
     private ValidationUtil validationUtil;
 
     @BeforeEach
