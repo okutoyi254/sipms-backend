@@ -1,0 +1,25 @@
+-- Goods Receipt Note Line Items
+CREATE TABLE goods_receipt_item (
+                                    id SERIAL PRIMARY KEY,
+                                    grn_id BIGINT NOT NULL REFERENCES procurement.inventory_goods_receipt_note(id) ON DELETE CASCADE,
+                                    po_item_id BIGINT NOT NULL REFERENCES procurement.inventory_purchase_order_item(id),
+                                    line_number INTEGER NOT NULL,
+                                    product_id INT,
+                                    product_code VARCHAR(100),
+                                    product_name VARCHAR(255) NOT NULL,
+                                    batch_number VARCHAR(100),
+                                    manufacture_date DATE,
+                                    expiry_date DATE,
+                                    unit_of_measure VARCHAR(20) NOT NULL,
+                                    quantity_ordered DECIMAL(15,3) NOT NULL,
+                                    quantity_received DECIMAL(15,3) NOT NULL,
+                                    quantity_accepted DECIMAL(15,3) NOT NULL,
+                                    quantity_rejected DECIMAL(15,3) DEFAULT 0,
+                                    unit_price DECIMAL(15,2) NOT NULL,
+                                    line_total DECIMAL(15,2) GENERATED ALWAYS AS (quantity_accepted * unit_price) STORED,
+                                    condition VARCHAR(20) CHECK (condition IN ('GOOD', 'DAMAGED', 'EXPIRED', 'DEFECTIVE')),
+                                    rejection_reason TEXT,
+                                    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                    UNIQUE(grn_id, line_number)
+);

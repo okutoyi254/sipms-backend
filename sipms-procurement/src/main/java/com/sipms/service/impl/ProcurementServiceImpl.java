@@ -7,6 +7,8 @@ import com.sipms.dto.quotationdtos.QuotationDTO;
 import com.sipms.dto.quotationdtos.UpdateQuotationRequest;
 import com.sipms.dto.supplierdtos.*;
 import com.sipms.enums.PRStatus;
+import com.sipms.exception.InvalidOperationException;
+import com.sipms.exception.ResourceNotFoundException;
 import com.sipms.mapper.ProcurementMapper;
 import com.sipms.model.InventoryPurchaseRequisition;
 import com.sipms.model.InventoryPurchaseRequisitionItem;
@@ -86,6 +88,16 @@ public class ProcurementServiceImpl implements ProcurementService {
 
     @Override
     public PurchaseRequisitionDTO submitRequisition(Long id) {
+
+        log.info("Submitting purchase requisition with ID: {}", id);
+
+        InventoryPurchaseRequisition requisition = requisitionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Purchase Requisition not found with ID: " + id));
+
+        if(requisition.getStatus() != PRStatus.PENDING_APPROVAL)
+            throw  new InvalidOperationException("Only requisitions in PENDING_APPROVAL status can be submitted. Current status: " + requisition.getStatus());
+
+        boolean fullyApproved = appro
         return null;
     }
 
